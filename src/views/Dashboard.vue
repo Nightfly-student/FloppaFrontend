@@ -4,16 +4,36 @@
       <div class="row m-auto h-100 pb-4">
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark mt-menu">
           <div
-            class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100"
+            class="
+              d-flex
+              flex-column
+              align-items-center align-items-sm-start
+              px-3
+              pt-2
+              text-white
+              min-vh-100
+            "
           >
             <a
               href="/"
-              class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+              class="
+                d-flex
+                align-items-center
+                pb-3
+                mb-md-0
+                me-md-auto
+                text-white text-decoration-none
+              "
             >
               <span class="fs-5 d-none d-sm-inline">Menu</span>
             </a>
             <ul
-              class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+              class="
+                nav nav-pills
+                flex-column
+                mb-sm-auto mb-0
+                align-items-center align-items-sm-start
+              "
               id="menu"
             >
               <li class="nav-item">
@@ -39,6 +59,44 @@
                 >
               </li>
               <li></li>
+              <li>
+                <a
+                  href="#userManagementMenu"
+                  data-bs-toggle="collapse"
+                  class="nav-link px-0 align-middle"
+                >
+                  <BIconPersonPlus class="fs-4" />
+                  <span class="ms-1 d-none d-sm-inline">User management</span>
+                </a>
+                <ul
+                  class="collapse nav flex-column ms-1"
+                  id="userManagementMenu"
+                  data-bs-parent="#menu"
+                >
+                  <li class="w-100">
+                    <a
+                      href="#"
+                      class="nav-link px-0"
+                      @click="onClick('home'), (namePage = 'Dashboard')"
+                      :class="{ activeLink: coupons }"
+                    >
+                      <span class="d-none d-sm-inline">Browse</span></a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="nav-link px-0"
+                      @click="onClick('addProduct')"
+                      :class="{ activeLink: addProduct }"
+                    >
+                      <span class="d-none d-sm-inline">Add user</span></a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li></li>
+
               <li>
                 <a
                   href="#submenu3"
@@ -96,6 +154,7 @@ import {
   BIconPersonPlus,
   BIconColumnsGap,
   BIconDiagram2,
+  BIconPersonFill,
 } from "bootstrap-icons-vue";
 
 import DashboardHome from "../components/dashboard-components/DashboardHome.vue";
@@ -108,6 +167,7 @@ export default {
     BIconPersonPlus,
     BIconColumnsGap,
     BIconDiagram2,
+    BIconPersonFill,
     DashboardHome,
   },
   methods: {
@@ -115,6 +175,7 @@ export default {
       this.home = false;
       this.transactions = false;
       this.settings = false;
+      this.userManagement = false;
 
       this[value] = true;
     },
@@ -124,6 +185,7 @@ export default {
       home: true,
       transactions: false,
       settings: false,
+      userManagement: false,
       namePage: "Dashboard",
     };
   },
@@ -147,6 +209,6 @@ export default {
   color: #307cee !important;
 }
 .mt-menu {
-    margin-top: 150px;
+  margin-top: 150px;
 }
 </style>

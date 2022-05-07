@@ -20,6 +20,9 @@ const store = createStore({
     getId(state) {
       return state.user._id;
     },
+    getUser(state){
+      return state.user;
+    }
   },
   mutations: {
     loginSuccesful(state, payload) {
@@ -28,6 +31,7 @@ const store = createStore({
     },
     logout(state) {
       state.user = null;
+      state.token = null;
       state.isAuthenticated = false;
     },
     tokenAdded(state, payload) {
