@@ -12,9 +12,9 @@
           ></button>
         </div>
         <div class="modal-body">
-            <p>Available Balance: &euro; {{account.balance.toFixed(2)}}</p>
-          <input type="number" :max="account.balance" min="1" v-model="value"/>
-          <p class="text-danger">{{errorMsg}}</p>
+          <p>Available Balance: &euro; {{ account.balance.toFixed(2) }}</p>
+          <input type="number" :max="account.balance" min="1" v-model="value" />
+          <p class="text-danger">{{ errorMsg }}</p>
         </div>
         <div class="modal-footer">
           <button
@@ -24,7 +24,9 @@
           >
             Close
           </button>
-          <button type="button" class="btn btn-primary">Withdraw</button>
+          <button type="button" @click="withdrawMoney" class="btn btn-primary">
+            Withdraw
+          </button>
         </div>
       </div>
     </div>
@@ -32,30 +34,48 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-    name: "WihtdrawModal",
-    props: {
-        account: Object,
+  name: "WithdrawModal",
+  props: {
+    account: Object,
+  },
+  data() {
+    return {
+      value: 1,
+      errorMsg: "",
+    };
+  },
+  methods: {
+    withdrawMoney() {
+      if (this.value > this.balance) {
+        this.errorMsg = "Insufficient funds";
+        return;
+      } else if (this.value < 0) {
+        this.errorMsg = "Unlogical Amount";
+        return;
+      } else {
+        axios
+          .post(`/api/v1/transactions/${this.account.iban}/withdraw`, {
+            amount: this.value,
+          })
+          .then((res) => {
+            this.$router.go();
+            this.$notify({
+              text: res.data,
+              type: "success",
+            });
+          })
+          .catch((err) => {
+            this.$notify({
+              text: err.response.data,
+              type: "error",
+            });
+            console.log(err);
+          });
+      }
     },
-    data() {
-        return {
-            value: 1,
-            errorMsg: '',
-        }
-    },
-    methods: {
-        withdrawMoney() {
-            if(this.value > this.balance) {
-                this.errorMsg = 'Unsuffient balance';
-                return;
-            }
-            if(this.value < 0) {
-                this.errorMsg = 'Unlogical Amount';
-                return;
-            }
-            
-        }
-    }
+  },
 };
 </script>
 

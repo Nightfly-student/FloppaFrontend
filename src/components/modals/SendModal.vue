@@ -46,7 +46,9 @@
             </div>
           </div>
           <p v-if="searched && accounts.length === 0">No Bank Accounts Found</p>
-          <p v-if="selected">Selected: <strong>{{ selectedIban }}</strong></p>
+          <p v-if="selected">
+            Selected: <strong>{{ selectedIban }}</strong>
+          </p>
           <hr />
           <p>Amount Send</p>
           <input type="number" :max="account.balance" min="1" v-model="value" />
@@ -60,7 +62,9 @@
           >
             Close
           </button>
-          <button type="button" class="btn btn-primary">Send</button>
+          <button type="button" @click="sendMoney" class="btn btn-primary">
+            Send
+          </button>
         </div>
       </div>
     </div>
@@ -69,7 +73,7 @@
 
 <script>
 import axios from "axios";
-import { authHeader } from "../../helpers/authHeader";
+import { authHeader, getUserName } from "../../helpers/authHeader";
 export default {
   name: "SendModal",
   props: {
@@ -114,6 +118,44 @@ export default {
       this.searched = false;
       this.accounts = [];
       this.selected = true;
+    },
+    sendMoney() {
+      if (!this.selectedIban) {
+        this.$notify({
+          text: "No IBAN selected",
+          type: "error",
+        });
+      }
+      if (this.value > this.balance) {
+        this.errorMsg = "Unsufficient funds";
+        return;
+      } else if (this.value < 0) {
+        this.errorMsg = "Unlogical Amount";
+        return;
+      } else {
+        
+        axios
+          .post(`/api/v1/transactions`, {
+            amount: this.value,
+            from: this.account.iban,
+            to: this.selectedIban,
+            userPerforming: getUserName(),
+          })
+          .then((res) => {
+            this.$router.go();
+            this.$notify({
+              text: res.data,
+              type: "success",
+            });
+          })
+          .catch((err) => {
+            this.$notify({
+              text: err.response.data,
+              type: "error",
+            });
+            console.log(err);
+          });
+      }
     },
   },
 };

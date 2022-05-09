@@ -3,7 +3,7 @@
     <div class="p-2">
       <div class="row">
         <div class="col-sm-8 col-7 col-lg-9">
-          <p class="tiny">Iban {{ account.iban }}</p>
+          <p class="tiny">IBAN {{ account.iban }}</p>
         </div>
         <div class="col-sm-4 col-5 col-lg-3">
           <p>{{ account.accountType }}</p>

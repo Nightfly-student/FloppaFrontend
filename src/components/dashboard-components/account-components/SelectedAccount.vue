@@ -10,7 +10,7 @@
       >
         Withdraw
       </button>
-      <WihtdrawModal :account="account" />
+      <WithdrawModal :account="account" />
 
       <button
         :data-bs-target="'#S' + account.iban"
@@ -20,24 +20,37 @@
         Send Money
       </button>
       <SendModal :account="account" />
-      <button class="btn btn-primary m-3 fs-4">Deposit</button>
+
+      <!--<button class="btn btn-primary m-3 fs-4">Deposit</button>-->
+
+      <button
+        :data-bs-target="'#D' + account.iban"
+        data-bs-toggle="modal"
+        class="btn btn-primary m-3 fs-4"
+      >
+        Deposit
+      </button>
+      <DepositModal :account="account" />
+
     </div>
-    <hr/>
+    <hr />
     <div>
       <h2 class="text-center">Transactions</h2>
     </div>
-    <hr/>
+    <hr />
   </div>
 </template>
 
 <script>
-import WihtdrawModal from "../../modals/WithdrawModal.vue";
+import WithdrawModal from "../../modals/WithdrawModal.vue";
 import SendModal from "../../modals/SendModal.vue";
+import DepositModal from "../../modals/DepositModal.vue";
 export default {
   name: "SelectedAccount",
   components: {
-    WihtdrawModal,
+    WithdrawModal,
     SendModal,
+    DepositModal,
   },
   props: {
     account: Object,
