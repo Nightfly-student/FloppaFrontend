@@ -17,6 +17,16 @@
         />
       </div>
     </div>
+    <div class="text-center mt-4">
+      <button
+        :data-bs-target="'#CreateAccount'"
+        data-bs-toggle="modal"
+        class="btn btn-primary"
+      >
+        Create New Bank Account
+      </button>
+      <AddAccountModal @createdAccount="newAccount"/>
+    </div>
   </div>
 </template>
 
@@ -25,11 +35,13 @@ import axios from "axios";
 import { authHeader, getUserId, getUserName } from "../../helpers/authHeader";
 import AccountDashboard from "./account-components/AccountDashboard.vue";
 import SelectedAccount from "./account-components/SelectedAccount.vue";
+import AddAccountModal from "../modals/AddAccountModal.vue";
 export default {
   name: "DashboardHome",
   components: {
     AccountDashboard,
     SelectedAccount,
+    AddAccountModal,
   },
   data() {
     return {
@@ -65,6 +77,9 @@ export default {
       }
       console.log(account);
     },
+    newAccount(account) {
+      this.accounts.push(account);
+    }
   },
   mounted() {
     this.getAllAccounts();
