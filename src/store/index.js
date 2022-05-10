@@ -86,6 +86,22 @@ const store = createStore({
           console.warn(err)
         })
     },
+
+    registerUser({commit}, user){
+
+      return new Promise((resolve, reject) => {
+        axios.post('/api/v1/users/', user, {headers: authHeader()})
+        .then((response) => {
+          console.warn(response.data)
+          resolve(response.data)
+        })
+        .catch((err) => {
+          console.warn(err)
+          reject(err)
+        })
+      })
+      
+    }
     // autoLogin({ commit }) {
     //   const user = JSON.parse(localStorage.getItem("user"));
     //   if (user) {

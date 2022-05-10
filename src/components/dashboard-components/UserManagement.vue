@@ -33,14 +33,23 @@
           <td>{{ user.firstname }}</td>
           <td>{{ user.lastname }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.roles[0].name }}</td>
+
+          <td v-if="user.roles.length > 1">Employee</td>
+          <td v-else>User</td>
+          
           <td>2</td>
           <td>Action</td>
         </tr>
       </tbody>
     </table>
     <div class="d-flex justify-content-between">
-      <button class="btn btn-primary">Add user</button>
+      <button 
+        :data-bs-target="'#CreateAccount'"
+        data-bs-toggle="modal"
+        class="btn btn-primary">
+        Add user
+      </button>
+      <AddUserModal />
       <nav aria-label="...">
         <ul class="pagination">
           <li class="page-item disabled">
@@ -61,9 +70,10 @@
 </template>
 
 <script>
+import AddUserModal from "../modals/AddUserModal.vue";
 export default {
   name: "UserManagement",
-  components: {},
+  components: { AddUserModal },
   data() {
     return {
       currentPage: 1
