@@ -79,6 +79,7 @@ export default {
     },
     newAccount(account) {
       this.accounts.push(account);
+      this.mounted = true;
     }
   },
   mounted() {

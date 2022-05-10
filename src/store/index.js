@@ -20,9 +20,9 @@ const store = createStore({
     getId(state) {
       return state.user._id;
     },
-    getUser(state){
+    getUser(state) {
       return state.user;
-    }
+    },
   },
   mutations: {
     loginSuccesful(state, payload) {
@@ -50,7 +50,7 @@ const store = createStore({
             localStorage.setItem("token", JSON.stringify(res.data));
             commit("tokenAdded", res.data);
             axios
-              .get(`/api/v1/auth/user?token=${res.data.access_token}`, {
+              .get(`/api/v1/auth/user`, {
                 headers: authHeader(),
               })
               .then((response) => {
@@ -60,7 +60,7 @@ const store = createStore({
               });
           })
           .catch((error) => {
-            reject(error.response.data.message);
+            reject(error);
           });
       });
     },
@@ -69,22 +69,6 @@ const store = createStore({
       localStorage.removeItem("user");
       commit("logout");
     },
-    // autoLogin({ commit }) {
-    //   const user = JSON.parse(localStorage.getItem("user"));
-    //   if (user) {
-    //     axios
-    //       .get("/api/users/autologin", {
-    //         headers: authHeader(),
-    //       })
-    //       .then((res) => {
-    //         commit("loginSuccesful", user);
-    //       })
-    //       .catch((err) => {
-    //         localStorage.removeItem("user");
-    //         commit("logout");
-    //       });
-    //   }
-    // },
   },
 });
 

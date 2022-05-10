@@ -18,8 +18,8 @@
             aria-label="Default select example"
           >
             <option selected value="">Select Account Type</option>
-            <option value="1">Regular</option>
-            <option value="0">Savings</option>
+            <option value="regular">Regular</option>
+            <option value="savings">Savings</option>
           </select>
           <p class="text-danger pt-2 m-0" v-if="errorMsg != ''">{{errorMsg}}</p>
         </div>
@@ -53,11 +53,11 @@ export default {
   },
   methods: {
     createAccount() {
-      if (this.value == "1" || this.value == "0") {
+      if (this.value == "regular" || this.value == "savings") {
         axios
           .post(
             `/api/v1/accounts/`,
-            { accountType: parseInt(this.value) },
+            { accountType: this.value },
             { headers: authHeader() }
           )
           .then((res) => {
