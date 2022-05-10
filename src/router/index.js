@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, useRoute } from "vue-router";
 import Home from "../views/Home.vue";
 import Dashboard from "../views/Dashboard.vue";
-import userManagement from "../views/UserManagement.vue"
+// import userManagement from "../views/UserManagement.vue"
 import store from "../store";
 
 const router = createRouter({
@@ -40,24 +40,24 @@ const router = createRouter({
         ]
       },
     },
-    {
-      path: "/userManagement",
-      name: "User management",
-      component: userManagement,
-      beforeEnter: userRoute,
-      meta: {
-        title: "User management - Floppa",
-        metaTags: [
-          {
-            name: "description",
-            content: "User management Floppa...",
-          },
-        ],
-        authorities:[
-          "EMPLOYEE"
-        ]
-      },
-    }
+    // {
+    //   path: "/userManagement",
+    //   name: "User management",
+    //   component: userManagement,
+    //   beforeEnter: userRoute,
+    //   meta: {
+    //     title: "User management - Floppa",
+    //     metaTags: [
+    //       {
+    //         name: "description",
+    //         content: "User management Floppa...",
+    //       },
+    //     ],
+    //     authorities:[
+    //       "EMPLOYEE"
+    //     ]
+    //   },
+    // }
   ],
 });
 

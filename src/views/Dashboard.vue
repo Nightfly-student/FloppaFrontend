@@ -77,7 +77,7 @@
                     <a
                       href="#"
                       class="nav-link px-0"
-                      @click="onClick('home'), (namePage = 'Dashboard')"
+                      @click="onClick('usermanagement'), (namePage = 'User management')"
                       :class="{ activeLink: coupons }"
                     >
                       <span class="d-none d-sm-inline">Browse</span></a
@@ -140,6 +140,7 @@
           <h2 class="text-center header-text">{{ namePage }}</h2>
           <div class="mt-5">
             <DashboardHome v-if="home" />
+            <Usermanagement v-if="usermanagement" />
           </div>
         </div>
       </div>
@@ -158,6 +159,7 @@ import {
 } from "bootstrap-icons-vue";
 
 import DashboardHome from "../components/dashboard-components/DashboardHome.vue";
+import Usermanagement from "../components/dashboard-components/UserManagement.vue";
 
 export default {
   name: "Dashboard",
@@ -169,7 +171,8 @@ export default {
     BIconDiagram2,
     BIconPersonFill,
     DashboardHome,
-  },
+    Usermanagement
+},
   methods: {
     onClick(value) {
       this.home = false;

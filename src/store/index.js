@@ -11,6 +11,7 @@ const store = createStore({
       user: user ? user : null,
       token: token ? token : null,
       isAuthenticated: token ? true : null,
+      users: null
     };
   },
   getters: {
@@ -22,6 +23,9 @@ const store = createStore({
     },
     getUser(state){
       return state.user;
+    },
+    getUsers(state){
+      return state.users;
     }
   },
   mutations: {
@@ -37,6 +41,9 @@ const store = createStore({
     tokenAdded(state, payload) {
       state.token = payload;
     },
+    userLoaded(state, payload){
+      state.users = payload;
+    }
   },
   actions: {
     login({ commit }, { username, password }) {
@@ -68,6 +75,16 @@ const store = createStore({
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       commit("logout");
+    },
+    loadUsers({commit}, {limit, offset}){
+      axios.get(`/api/v1/users?limit=${limit}&offset=${offset}`, {headers: authHeader()})
+        .then((response) =>{
+          console.warn(response.data)
+          commit("userLoaded",response.data)
+        })
+        .catch((err) => {
+          console.warn(err)
+        })
     },
     // autoLogin({ commit }) {
     //   const user = JSON.parse(localStorage.getItem("user"));
