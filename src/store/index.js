@@ -21,7 +21,7 @@ const store = createStore({
     getId(state) {
       return state.user._id;
     },
-    getUser(state){
+    getUser(state) {
       return state.user;
     },
     getUsers(state){
@@ -57,7 +57,7 @@ const store = createStore({
             localStorage.setItem("token", JSON.stringify(res.data));
             commit("tokenAdded", res.data);
             axios
-              .get(`/api/v1/auth/user?token=${res.data.access_token}`, {
+              .get(`/api/v1/auth/user`, {
                 headers: authHeader(),
               })
               .then((response) => {
@@ -67,7 +67,7 @@ const store = createStore({
               });
           })
           .catch((error) => {
-            reject(error.response.data.message);
+            reject(error);
           });
       });
     },
