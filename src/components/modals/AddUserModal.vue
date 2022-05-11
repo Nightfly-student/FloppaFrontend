@@ -97,6 +97,19 @@
               </div>
             </div>
           </div>
+
+          <div class="row mt-2">
+            <div class="col">
+              <label>Roles</label>
+              <multiselect
+                mode="tags"
+                v-model="selectedRoles"
+                :options="loadedRoles"
+                class="multiselect-yellow mt-1"
+              />
+            </div>
+          </div>
+
           <p class="text-danger pt-2 m-0" v-if="errorMsg != ''">
             {{ errorMsg }}
           </p>
@@ -124,10 +137,12 @@
 </template>
 
 <script>
-import axios from "axios";
-import { authHeader } from "../../helpers/authHeader";
+
+import Multiselect from "@vueform/multiselect";
+
 export default {
   name: "AddUserModal",
+  components: { Multiselect },
   data() {
     return {
       value: "",
@@ -140,12 +155,42 @@ export default {
       postalcode: "5166DD",
       username: "sjonny55",
       dob: "",
+      selectedRoles: [],
     };
+  },
+  mounted(){
+    this.$store.dispatch("loadRoles", {limit: 5, offset: 0})
+  },
+  computed:{
+    loadedRoles(){
+      var loadedRoles = this.$store.state.roles;
+      
+      var roles = [];
+
+      if(loadedRoles != null){
+        loadedRoles.map((role) => {
+          var roleItem = {label: role.name, value: role}
+          roles.push(roleItem)
+        })
+      }
+
+      return roles
+
+    }
   },
   methods: {
     registerUser(){
-      var user = {firstname: this.firstname, lastname: this.lastname, email: this.email, address: this.address, postalcode: this.postalcode, username: this.username, dob: this.dob}
-      
+      var user = {
+        firstname: this.firstname, 
+        lastname: this.lastname, 
+        email: this.email, 
+        address: this.address, 
+        postalcode: this.postalcode, 
+        username: this.username, 
+        dob: this.dob,
+        roles: this.selectedRoles
+      }
+
       this.$store.dispatch("registerUser", user)
       .then((newUser) => {
         this.$notify({
@@ -166,4 +211,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style src="@vueform/multiselect/themes/default.css"></style>
+
+<style>
+  .multiselect-tag {
+    background: #126EF8;
+  }
+  .is-selected {
+  background: #126EF8;
+  }
+</style>

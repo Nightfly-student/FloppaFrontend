@@ -13,6 +13,7 @@ const store = createStore({
       isAuthenticated: token ? true : null,
       users: null,
       totalUsersCount: null,
+      roles: null
     };
   },
   getters: {
@@ -30,6 +31,9 @@ const store = createStore({
     },
     getUsersCount(state){
       return state.totalUsersCount
+    },
+    getRoles(state){
+      return state.roles
     }
   },
   mutations: {
@@ -48,6 +52,9 @@ const store = createStore({
     userLoaded(state, payload){
       state.users = payload.users;
       state.totalUsersCount = payload.totalCount;
+    },
+    rolesLoaded(state, payload){
+      state.roles = payload.roles
     }
   },
   actions: {
@@ -76,11 +83,13 @@ const store = createStore({
           });
       });
     },
+
     logout({ commit }) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       commit("logout");
     },
+
     loadUsers({commit}, {limit, offset, filter}){
 
       var url = `/api/v1/users?limit=${limit}&offset=${offset}`;
@@ -111,6 +120,17 @@ const store = createStore({
         })
       })
       
+    },
+
+    loadRoles({commit}, {limit, offset}){
+      axios.get(`/api/v1/roles?limit=${limit}&offset=${offset}`)
+      .then((response) =>{
+        console.warn("Loaded roles" + response.data.roles)
+        commit("rolesLoaded", response.data)
+      })
+      .catch((err) =>{
+        console.warn(err)
+      })
     }
     // autoLogin({ commit }) {
     //   const user = JSON.parse(localStorage.getItem("user"));
