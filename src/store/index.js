@@ -12,7 +12,7 @@ const store = createStore({
       token: token ? token : null,
       isAuthenticated: token ? true : null,
       users: null,
-      totalUsersCount: null
+      totalUsersCount: null,
     };
   },
   getters: {
@@ -81,8 +81,13 @@ const store = createStore({
       localStorage.removeItem("user");
       commit("logout");
     },
-    loadUsers({commit}, {limit, offset}){
-      axios.get(`/api/v1/users?limit=${limit}&offset=${offset}`, {headers: authHeader()})
+    loadUsers({commit}, {limit, offset, filter}){
+
+      var url = `/api/v1/users?limit=${limit}&offset=${offset}`;
+
+      if(filter != undefined)url += `&filter=${filter}`; this.state.filtered = true;
+
+      axios.get(url)
         .then((response) =>{
           console.warn(response.data)
           commit("userLoaded",response.data)

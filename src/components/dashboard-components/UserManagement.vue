@@ -3,7 +3,7 @@
     <div class="d-flex mb-2 justify-content-between">
       <div class="entries d-flex justify-content-between gap-2">
         <span>Showing</span>
-        <select name="" id="" @change="loadUsers($event)">
+        <select name="" id="" v-model="limit">
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>
@@ -13,8 +13,8 @@
         <span>Users of {{usersCount}}</span>
       </div>
       <div class="search d-flex gap-2">
-        <Label>Search</Label>
-        <input type="" id="" name="" />
+        <Label>Search by</Label>
+        <input type="" id="" name="" v-model="filter"/>
       </div>
     </div>
     <table class="table table-striped table-dark">
@@ -73,19 +73,34 @@
 import AddUserModal from "../modals/AddUserModal.vue";
 export default {
   name: "UserManagement",
-  components: { AddUserModal },
+  components: { 
+    AddUserModal 
+    
+    },
   data() {
     return {
-      currentPage: 1
+      currentPage: 1,
+      filter: "",
+      limit: 5
     };
   },
   methods: {
-    loadUsers(event) {
+    loadUsers() {
       var offset = this.$store.state.users.length;
-      var limit = event.target.value;
-      this.$store.dispatch("loadUsers", { offset: 0, limit: limit });
+      var limit = this.limit;
+      var filter = this.filter;
+      console.warn(`Filtering with limit ${limit}, offset ${offset}, filter ${filter}`)
+      this.$store.dispatch("loadUsers", { offset: 0, limit: limit, filter: filter });
     },
   },
+  watch:{
+    filter(){ 
+      this.loadUsers();
+    },
+    limit(){
+      this.loadUsers();
+    }
+  },  
   mounted() {
     this.$store.dispatch("loadUsers", { offset: 0, limit: 5 });
   },
