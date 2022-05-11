@@ -11,7 +11,8 @@ const store = createStore({
       user: user ? user : null,
       token: token ? token : null,
       isAuthenticated: token ? true : null,
-      users: null
+      users: null,
+      totalUsersCount: null
     };
   },
   getters: {
@@ -26,6 +27,9 @@ const store = createStore({
     },
     getUsers(state){
       return state.users;
+    },
+    getUsersCount(state){
+      return state.totalUsersCount
     }
   },
   mutations: {
@@ -42,7 +46,8 @@ const store = createStore({
       state.token = payload;
     },
     userLoaded(state, payload){
-      state.users = payload;
+      state.users = payload.users;
+      state.totalUsersCount = payload.totalCount;
     }
   },
   actions: {

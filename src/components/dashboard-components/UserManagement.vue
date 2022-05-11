@@ -2,7 +2,7 @@
   <div class="container-xl">
     <div class="d-flex mb-2 justify-content-between">
       <div class="entries d-flex justify-content-between gap-2">
-        <span>Show</span>
+        <span>Showing</span>
         <select name="" id="" @change="loadUsers($event)">
           <option value="5">5</option>
           <option value="10">10</option>
@@ -10,7 +10,7 @@
           <option value="20">20</option>
           <option value="25">25</option>
         </select>
-        <span>Users</span>
+        <span>Users of {{usersCount}}</span>
       </div>
       <div class="search d-flex gap-2">
         <Label>Search</Label>
@@ -93,6 +93,9 @@ export default {
     users() {
       return this.$store.state.users;
     },
+    usersCount(){
+      return this.$store.state.totalUsersCount;
+    }
   },
 };
 </script>
