@@ -58,44 +58,18 @@
                   <span class="ms-1 d-none d-sm-inline">Transactions</span></a
                 >
               </li>
-              <li></li>
+
               <li>
                 <a
-                  href="#userManagementMenu"
-                  data-bs-toggle="collapse"
+                  href="#"
                   class="nav-link px-0 align-middle"
+                  @click="onClick('userManagement'), (namePage = 'User management')"
+                  :class="{ activeLink: userManagement }"
                 >
                   <BIconPersonPlus class="fs-4" />
-                  <span class="ms-1 d-none d-sm-inline">User management</span>
-                </a>
-                <ul
-                  class="collapse nav flex-column ms-1"
-                  id="userManagementMenu"
-                  data-bs-parent="#menu"
+                  <span class="ms-1 d-none d-sm-inline">User management</span></a
                 >
-                  <li class="w-100">
-                    <a
-                      href="#"
-                      class="nav-link px-0"
-                      @click="onClick('usermanagement'), (namePage = 'User management')"
-                      :class="{ activeLink: coupons }"
-                    >
-                      <span class="d-none d-sm-inline">Browse</span></a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      class="nav-link px-0"
-                      @click="onClick('addProduct')"
-                      :class="{ activeLink: addProduct }"
-                    >
-                      <span class="d-none d-sm-inline">Add user</span></a
-                    >
-                  </li>
-                </ul>
               </li>
-              <li></li>
 
               <li>
                 <a
@@ -140,7 +114,7 @@
           <h2 class="text-center header-text">{{ namePage }}</h2>
           <div class="mt-5">
             <DashboardHome v-if="home" />
-            <Usermanagement v-if="usermanagement" />
+            <Usermanagement v-if="userManagement" />
           </div>
         </div>
       </div>
