@@ -74,20 +74,23 @@ export default {
   methods:{
     update(){
 
-      var test = {
-        id: 3,
-        firstname : "Pietr",
-        lastname : "Post",
-        email : "pieterpost@gmail.com",
-        username : "pietertje",
-        address : "Langeweg 534",
-        postalcode : "5124DD",
-        dob : "2000-10-10"
+      var updated = {
+        id: this.id,
+        firstname : this.firstname,
+        lastname : this.lastname,
+        email : this.email,
+        username : this.username,
+        address : this.address,
+        postalcode : this.postalcode,
+        dob : this.dob
       }
 
-      this.$store.dispatch("updateUser", test)
+      this.$store.dispatch("updateUser", updated)
       .then((data) => {
-        console.warn(data)
+        this.$notify({
+          text: "Updated account details successfully",
+          type: "success",
+        });
       })
       .catch((err) => {
         console.warn(err)
@@ -121,6 +124,7 @@ export default {
   computed:{
     loggedInUser(){
       var data = this.$store.state.user
+      this.id = data.id
       this.firstname = data.firstname
       this.lastname = data.lastname
       this.address = data.address

@@ -1,6 +1,6 @@
 <template>
   <div class="container-xl text-light">
-    <p>Hi {{ userName() }}!</p>
+    <p>Hi {{ username }}!</p>
     <div v-if="selected">
       <SelectedAccount v-if="mounted" :account="selectedAccount" />
     </div>
@@ -80,6 +80,11 @@ export default {
     newAccount(account) {
       this.accounts.push(account);
       this.mounted = true;
+    }
+  },
+  computed:{
+    username(){
+      return this.$store.state.user.username
     }
   },
   mounted() {

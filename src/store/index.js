@@ -58,6 +58,9 @@ const store = createStore({
     },
     updateUserDetails(state, payload){
 
+    },
+    updateTokens(state, payload){
+      state.token = payload
     }
   },
   actions: {
@@ -94,7 +97,6 @@ const store = createStore({
     },
 
     loadUsers({commit}, {limit, offset, filter}){
-
       var url = `/api/v1/users?limit=${limit}&offset=${offset}`;
 
       if(filter != undefined)url += `&filter=${filter}`; this.state.filtered = true;
@@ -131,11 +133,47 @@ const store = createStore({
         axios.put(`/api/v1/users/`+user.id, user)
         .then((response) =>{
           console.warn(response.data)
+
+          //reload tokens and user data
+          this.dispatch("refreshTokens");
+
           resolve(response.data)
         })
         .catch((err) => {
           reject(err)
         })
+      })
+
+    },
+
+    refreshTokens({commit}){
+      var token = this.state.token.refresh_token;
+
+      if(!token){ console.error("Cant refresh token, it is missing"); return;}
+
+      axios.post('/api/v1/auth/refresh/', {refreshToken: token})
+      .then((response) => {
+        commit("updateTokens", response.data)
+        
+        localStorage.setItem("token", JSON.stringify(response.data));
+        this.dispatch("getAccountData", {access_token: response.data.access_token});
+        console.warn(response.data)
+      })
+      .catch((err) => {
+        console.warn(err)
+      })
+    },
+
+    getAccountData({commit}, access_token){
+
+      axios.get('/api/v1/auth/user', {headers: authHeader()})
+      .then((response) => {
+        console.warn(response.data)
+        commit("loginSuccesful", response.data)
+      })
+      .catch((err) =>{
+        console.warn(err)
+        console.warn("Failed to reload user data")
       })
 
     },
