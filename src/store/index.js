@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import axios from "axios";
-import { authHeader } from "../helpers/authHeader";
+import { authHeader, getUserId } from "../helpers/authHeader";
 
 const user = JSON.parse(localStorage.getItem("user"));
 const token = JSON.parse(localStorage.getItem("token"));
@@ -56,6 +56,10 @@ const store = createStore({
     rolesLoaded(state, payload){
       state.roles = payload.roles
     },
+    transactionLoaded(state, payload){
+      state.transactions = payload.transactions;
+      state.totalTransactionCount = payload.totalCount;
+    },
     updateUserDetails(state, payload){
 
     },
@@ -105,6 +109,17 @@ const store = createStore({
         .then((response) =>{
           console.warn(response.data)
           commit("userLoaded",response.data)
+        })
+        .catch((err) => {
+          console.warn(err)
+        })
+    },
+
+    loadTransactions({commit}, {limit, offset}){
+      axios.get(`/api/v1/transactions?limit=${limit}&offset=${offset}&userId=${getUserId()}`)
+        .then((response) =>{
+          console.warn(response.data)
+          commit("transactionLoaded",response.data)
         })
         .catch((err) => {
           console.warn(err)

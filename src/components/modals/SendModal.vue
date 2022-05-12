@@ -4,23 +4,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Send Money</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p>Available Balance: &euro; {{ account.balance.toFixed(2) }}</p>
           <hr />
           <p>Search For Account</p>
-          <input
-            type="text"
-            v-model="q"
-            @change="onChange()"
-            placeholder="Iban"
-          />
+          <input type="text" v-model="q" @change="onChange()" placeholder="Iban" />
           <button class="btn-secondary" @click="onChange()">Search</button>
           <div v-if="accounts.length != 0">
             <p class="mt-2">Found Iban Accounts</p>
@@ -33,11 +23,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    v-for="acc in accounts"
-                    :key="acc.iban"
-                    @click="onClick(acc.iban)"
-                  >
+                  <tr v-for="acc in accounts" :key="acc.iban" @click="onClick(acc.iban)">
                     <th scope="row">{{ acc.iban }}</th>
                     <td>{{ acc.accountType }}</td>
                   </tr>
@@ -55,11 +41,7 @@
           <p class="text-danger">{{ errorMsg }}</p>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
           <button type="button" @click="sendMoney" class="btn btn-primary">
@@ -103,8 +85,16 @@ export default {
         )
         .then((res) => {
           console.log(res.data);
-          this.accounts = res.data;
-          this.searched = true;
+
+          res.data.forEach((acc, i) => {
+            if (acc.iban != this.account.iban || this.account.accountType == "SAVINGS" && acc.userId == this.account.userId) this.accounts.push(acc);
+          })
+
+          if (this.accounts.length == 1) {
+            this.onClick(this.accounts[0].iban);
+          } else {
+            this.searched = true;
+          }
         });
     },
     onChange() {
@@ -121,41 +111,32 @@ export default {
     },
     sendMoney() {
       if (!this.selectedIban) {
-        this.$notify({
-          text: "No IBAN selected",
-          type: "error",
-        });
-      }
-      if (this.value > this.balance) {
-        this.errorMsg = "Unsufficient funds";
+        this.errorMsg = "No IBAN selected";
         return;
-      } else if (this.value < 0) {
+      }
+      if (this.value <= 0) {
         this.errorMsg = "Unlogical Amount";
         return;
-      } else {
-        
-        axios
-          .post(`/api/v1/transactions`, {
-            amount: this.value,
-            from: this.account.iban,
-            to: this.selectedIban,
-            userPerforming: getUserName(),
-          })
-          .then((res) => {
-            this.$router.go();
-            this.$notify({
-              text: res.data,
-              type: "success",
-            });
-          })
-          .catch((err) => {
-            this.$notify({
-              text: err.response.data,
-              type: "error",
-            });
-            console.log(err);
-          });
       }
+      axios
+        .post(`/api/v1/transactions/transfer`, {
+          amount: this.value,
+          from: this.account.iban,
+          to: this.selectedIban,
+          userPerforming: getUserName(),
+        })
+        .then((res) => {
+          this.$router.go();
+          this.$notify({
+            text: res.data,
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          this.errorMsg = err.response.data;
+          return;
+        });
     },
   },
 };
@@ -165,6 +146,7 @@ export default {
 .table {
   overflow: auto;
 }
+
 .table-height {
   height: 75px;
   overflow: auto;

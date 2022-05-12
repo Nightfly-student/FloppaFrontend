@@ -48,32 +48,26 @@ export default {
   },
   methods: {
     withdrawMoney() {
-      if (this.value > this.balance) {
-        this.errorMsg = "Insufficient funds";
-        return;
-      } else if (this.value < 0) {
+      if (this.value <= 0) {
         this.errorMsg = "Unlogical Amount";
         return;
-      } else {
-        axios
-          .post(`/api/v1/transactions/${this.account.iban}/withdraw`, {
-            amount: this.value,
-          })
-          .then((res) => {
-            this.$router.go();
-            this.$notify({
-              text: res.data,
-              type: "success",
-            });
-          })
-          .catch((err) => {
-            this.$notify({
-              text: err.response.data,
-              type: "error",
-            });
-            console.log(err);
-          });
       }
+      axios
+        .post(`/api/v1/transactions/${this.account.iban}/withdraw`, {
+          amount: this.value,
+        })
+        .then((res) => {
+          this.$router.go();
+          this.$notify({
+            text: res.data,
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          this.errorMsg = err.response.data;
+          return;
+        });
     },
   },
 };
