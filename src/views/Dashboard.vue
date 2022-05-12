@@ -89,8 +89,8 @@
                     <a
                       href="#"
                       class="nav-link px-0"
-                      @click="onClick('coupons')"
-                      :class="{ activeLink: coupons }"
+                      @click="onClick('profileData'), (namePage='Profile data')"
+                      :class="{ activeLink: profileData }"
                     >
                       <span class="d-none d-sm-inline">Profile</span></a
                     >
@@ -115,6 +115,7 @@
           <div class="mt-5">
             <DashboardHome v-if="home" />
             <Usermanagement v-if="userManagement" />
+            <ProfileData v-if="profileData" />
           </div>
         </div>
       </div>
@@ -134,6 +135,7 @@ import {
 
 import DashboardHome from "../components/dashboard-components/DashboardHome.vue";
 import Usermanagement from "../components/dashboard-components/UserManagement.vue";
+import ProfileData from "../components/dashboard-components/ProfileData.vue";
 
 export default {
   name: "Dashboard",
@@ -145,7 +147,8 @@ export default {
     BIconDiagram2,
     BIconPersonFill,
     DashboardHome,
-    Usermanagement
+    Usermanagement,
+    ProfileData
 },
   methods: {
     onClick(value) {
@@ -153,7 +156,7 @@ export default {
       this.transactions = false;
       this.settings = false;
       this.userManagement = false;
-
+      this.profileData = false;
       this[value] = true;
     },
   },
