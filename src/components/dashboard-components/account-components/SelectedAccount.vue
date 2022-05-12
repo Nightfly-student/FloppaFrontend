@@ -31,7 +31,14 @@
         Deposit
       </button>
       <DepositModal :account="account" />
-
+      <button
+        :data-bs-target="'#SS' + account.iban"
+        data-bs-toggle="modal"
+        class="btn btn-primary m-3 fs-4"
+      >
+        Settings
+      </button>
+      <UpdateBankAccountModal :account="account" />
     </div>
     <hr />
     <div>
@@ -45,12 +52,14 @@
 import WithdrawModal from "../../modals/WithdrawModal.vue";
 import SendModal from "../../modals/SendModal.vue";
 import DepositModal from "../../modals/DepositModal.vue";
+import UpdateBankAccountModal from "../../modals/UpdateBankAccountModal.vue";
 export default {
   name: "SelectedAccount",
   components: {
     WithdrawModal,
     SendModal,
     DepositModal,
+    UpdateBankAccountModal,
   },
   props: {
     account: Object,
