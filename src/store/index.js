@@ -55,6 +55,9 @@ const store = createStore({
     },
     rolesLoaded(state, payload){
       state.roles = payload.roles
+    },
+    updateUserDetails(state, payload){
+
     }
   },
   actions: {
@@ -121,6 +124,22 @@ const store = createStore({
       })
       
     },
+
+    updateUser({commit}, user){
+
+      return new Promise((resolve, reject) =>{
+        axios.put(`/api/v1/users/`+user.id, user)
+        .then((response) =>{
+          console.warn(response.data)
+          resolve(response.data)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+      })
+
+    },
+
 
     loadRoles({commit}, {limit, offset}){
       axios.get(`/api/v1/roles?limit=${limit}&offset=${offset}`)
