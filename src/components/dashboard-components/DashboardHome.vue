@@ -2,7 +2,11 @@
   <div class="container-xl text-light">
     <p>Hi {{ username }}!</p>
     <div v-if="selected">
-      <SelectedAccount v-if="mounted" :account="selectedAccount" />
+      <SelectedAccount
+        v-if="mounted"
+        :account="selectedAccount"
+        @updateAccount="updatedAccount"
+      />
     </div>
     <div class="row gy-4">
       <div
@@ -25,7 +29,7 @@
       >
         Create New Bank Account
       </button>
-      <AddAccountModal @createdAccount="newAccount"/>
+      <AddAccountModal @createdAccount="newAccount" />
     </div>
   </div>
 </template>
@@ -80,12 +84,19 @@ export default {
     newAccount(account) {
       this.accounts.push(account);
       this.mounted = true;
-    }
+    },
+    updatedAccount(account) {
+      this.accounts.forEach((acc) => {
+        if (acc.iban === account.iban) {
+          acc = account;
+        }
+      });
+    },
   },
-  computed:{
-    username(){
-      return this.$store.state.user.username
-    }
+  computed: {
+    username() {
+      return this.$store.state.user.username;
+    },
   },
   mounted() {
     this.getAllAccounts();

@@ -38,7 +38,10 @@
       >
         Settings
       </button>
-      <UpdateBankAccountModal :account="account" />
+      <UpdateBankAccountModal
+        :account="account"
+        @updateAccount="updatedAccount"
+      />
     </div>
     <hr />
     <div>
@@ -63,6 +66,12 @@ export default {
   },
   props: {
     account: Object,
+  },
+  methods: {
+    updatedAccount(account) {
+      this.account = account;
+      this.$emit("updateAccount", this.account);
+    },
   },
 };
 </script>
