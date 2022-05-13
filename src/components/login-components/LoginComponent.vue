@@ -42,7 +42,7 @@
             Sign in
           </button>
           <div class="d-flex justify-content-around align-items-center p-4">
-            <router-link to="/forgot">Forgot password?</router-link>
+            <router-link @click="forgot" to="/?page=reset">Forgot password?</router-link>
           </div>
         </div>
       </Form>
@@ -71,6 +71,9 @@ export default {
     };
   },
   methods: {
+    forgot(){
+      this.$store.dispatch("setHomePageComponent", "reset")
+    },
     onSubmit(values) {
       this.$store
         .dispatch("login", { username: values.email, password: values.password })

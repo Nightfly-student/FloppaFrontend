@@ -15,7 +15,8 @@ const store = createStore({
       totalUsersCount: null,
       roles: null,
       modalPassword: null,
-      updatedUserData: null
+      updatedUserData: null,
+      homeSelectedPage: null
     };
   },
   getters: {
@@ -36,6 +37,9 @@ const store = createStore({
     },
     getRoles(state){
       return state.roles
+    },
+    getSelectedPage(state){
+      return state.homeSelectedPage
     }
   },
   mutations: {
@@ -69,9 +73,16 @@ const store = createStore({
     },
     updateTokens(state, payload){
       state.token = payload
+    },
+    updatePageParam(state, payload){
+      state.homeSelectedPage = payload
     }
   },
   actions: {
+    setHomePageComponent({commit}, param){
+      commit("updatePageParam", param)
+    },
+
     login({ commit }, { username, password }) {
       return new Promise((resolve, reject) => {
         axios
@@ -222,6 +233,18 @@ const store = createStore({
       })
       .catch((err) =>{
         console.warn(err)
+      })
+    },
+
+    resetPassword({commit}, email){
+      return new Promise((resolve, reject) => {
+        axios.post('/api/v1/resetRequest/', {email: email})
+        .then((response) => {
+          resolve("Successfully send password reset link")
+        })
+        .catch((err) => {
+          reject(err.response.data.message)
+        })
       })
     }
     // autoLogin({ commit }) {

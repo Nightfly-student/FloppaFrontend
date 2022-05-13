@@ -13,7 +13,8 @@
             </div>
           </div>
           <div class="col-xl-4 col-md-6 col-sm-12 col-12">
-            <LoginComponent v-if="!this.$store.getters.isLogged"/>
+            <LoginComponent v-if="(page == '' || page == null) && !this.$store.getters.isLogged"/>
+            <ForgotPassword v-if="page == 'reset'" />
           </div>
         </div>
       </div>
@@ -50,11 +51,31 @@
 
 <script>
 import LoginComponent from "../components/login-components/LoginComponent.vue";
+import ForgotPassword from "../components/home-components/ForgotPassword.vue";
 export default {
   name: "Home",
   components: {
     LoginComponent,
+    ForgotPassword
+},
+  methods:{
+    change(){
+
+    }
   },
+  mounted() {
+    var page = this.$route.query.page;
+    if(page){
+      this.$store.dispatch("setHomePageComponent",page);
+    }else{
+      this.$store.dispatch("setHomePageComponent",null);
+    }
+  },
+  computed:{
+    page(){
+      return this.$store.state.homeSelectedPage
+    }
+  }
 };
 </script>
 
