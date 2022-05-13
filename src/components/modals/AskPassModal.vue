@@ -1,9 +1,9 @@
 <template>
-  <div class="modal text-dark fade" id="askPassModal">
+  <div class="modal text-dark fade" v-bind:id="dialogId">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Password confirmation</h5>
+          <h5 class="modal-title">{{dialogTitle}}</h5>
           <button
             type="button"
             class="btn-close"
@@ -15,6 +15,7 @@
           <div class="row">
             <div class="col">
               <div class="form-group">
+                <p class="mt-2 mb-3">{{dialogMessage}}</p>
                 <label for="exampleInputPassword1">Password</label>
                 <input
                   type="password"
@@ -53,7 +54,11 @@
 export default {
   name: "AskPassModal",
   props: {
-    storeEvent: String
+    dialogId: String,
+    storeEvent: String,
+    dialogTitle: String,
+    dialogMessage: String,
+    redirectUrl: String
   },
   data() {
     return {
@@ -73,6 +78,9 @@ export default {
             text: message,
             type: "success",
           });
+
+          if(this.redirectUrl) this.$router.push(this.redirectUrl)
+
         })
         .catch((message) => {
           this.$notify({

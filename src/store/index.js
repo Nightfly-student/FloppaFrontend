@@ -44,6 +44,8 @@ const store = createStore({
       state.isAuthenticated = true;
     },
     logout(state) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
@@ -97,8 +99,6 @@ const store = createStore({
     },
 
     logout({ commit }) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
       commit("logout");
     },
 
@@ -142,6 +142,21 @@ const store = createStore({
         })
       })
       
+    },
+
+    deactivateUser({commit}){
+      var userId = this.state.user.id;
+      return new Promise((resolve, reject) => {
+        axios.put(`/api/v1/users/${userId}/deactivate`, {password: this.state.modalPassword}, {headers: authHeader()})
+        .then((data) => {
+          resolve("Account deactived successfully")
+          commit("logout")
+        })
+        .catch((err) => {
+          console.warn(err)
+          reject(err)
+        })
+      })
     },
 
     updateUser({commit}){

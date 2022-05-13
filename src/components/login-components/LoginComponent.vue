@@ -42,7 +42,7 @@
             Sign in
           </button>
           <div class="d-flex justify-content-around align-items-center p-4">
-            <router-link to="/register">Don't have an account?</router-link>
+            <router-link to="/forgot">Forgot password?</router-link>
           </div>
         </div>
       </Form>
@@ -83,7 +83,7 @@ export default {
         })
         .catch((err) => {
           this.$notify({
-            text: err,
+            text: err.response.data.message,
             type: "error",
           });
         });

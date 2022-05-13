@@ -62,12 +62,17 @@
 
           <button
             @click="setUpdateUserData" 
-            :data-bs-target="'#askPassModal'"
+            :data-bs-target="'#askPassModalUserUpdate'"
             data-bs-toggle="modal"
             class="btn btn-primary">
             Update account data              
           </button>
-          <AskPassModal storeEvent="updateUser"/>
+          <AskPassModal
+            dialogId="askPassModalUserUpdate" 
+            storeEvent="updateUser"
+            dialogTitle="Updating user credentials"
+            dialogMessage="Please enter your password to update your account"
+          />
 
         </div>
       </div>

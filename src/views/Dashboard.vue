@@ -96,14 +96,23 @@
                     >
                   </li>
                   <li>
-                    <a
-                      href="#"
-                      class="nav-link px-0"
-                      @click="onClick('addProduct')"
-                      :class="{ activeLink: addProduct }"
-                    >
-                      <span class="d-none d-sm-inline">Bank Account</span></a
-                    >
+
+     
+                      <span 
+                        class="d-none d-sm-inline"
+                        :data-bs-target="'#askPassModalDeactivation'"
+                        data-bs-toggle="modal">
+                        Deactivate account
+                      </span>
+
+                    <AskPassModal
+                      dialogId="askPassModalDeactivation" 
+                      storeEvent="deactivateUser"
+                      dialogTitle="Account deactivation"
+                      redirectUrl="/"
+                      dialogMessage="This action will deactivate your account including all the associated bank accounts. You will be logged out and you will not be able to login back into your account. Please provide your password if you want to do this"
+                    />
+
                   </li>
                 </ul>
               </li>
@@ -138,6 +147,7 @@ import DashboardHome from "../components/dashboard-components/DashboardHome.vue"
 import Transactions from "../components/dashboard-components/Transactions.vue";
 import Usermanagement from "../components/dashboard-components/UserManagement.vue";
 import ProfileData from "../components/dashboard-components/ProfileData.vue";
+import AskPassModal from "../components/modals/AskPassModal.vue";
 
 export default {
   name: "Dashboard",
@@ -151,7 +161,8 @@ export default {
     DashboardHome,
     Transactions,
     Usermanagement,
-    ProfileData
+    ProfileData,
+    AskPassModal
 },
   methods: {
     onClick(value) {
