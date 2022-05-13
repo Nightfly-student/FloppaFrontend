@@ -13,7 +13,9 @@ const store = createStore({
       isAuthenticated: token ? true : null,
       users: null,
       totalUsersCount: null,
-      roles: null
+      roles: null,
+      modalPassword: null,
+      updatedUserData: null
     };
   },
   getters: {
@@ -127,9 +129,12 @@ const store = createStore({
       
     },
 
-    updateUser({commit}, user){
+    updateUser({commit}){
 
       return new Promise((resolve, reject) =>{
+        var user = this.state.updatedUserData
+        user.password = this.state.modalPassword;
+        console.warn(user)
         axios.put(`/api/v1/users/`+user.id, user)
         .then((response) =>{
           console.warn(response.data)
@@ -137,10 +142,10 @@ const store = createStore({
           //reload tokens and user data
           this.dispatch("refreshTokens");
 
-          resolve(response.data)
+          resolve("Updated account successfully")
         })
         .catch((err) => {
-          reject(err)
+          reject(err, "errrrrrr")
         })
       })
 
