@@ -48,29 +48,28 @@ export default {
   },
   methods: {
     depositMoney() {
-      if (this.value < 0) {
+      if (this.value <= 0) {
         this.errorMsg = "Unlogical Amount";
         return;
-      } else {
-        axios
-          .post(`/api/v1/transactions/${this.account.iban}/deposit`, {
-            amount: this.value,
-          })
-          .then((res) => {
-            this.$router.go();
-            this.$notify({
-              text: res.data,
-              type: "success",
-            });
-          })
-          .catch((err) => {
-            this.$notify({
-              text: err.response.data,
-              type: "error",
-            });
-            console.log(err);
-          });
       }
+      axios
+        .post(`/api/v1/transactions/${this.account.iban}/deposit`, {
+          amount: this.value,
+        })
+        .then((res) => {
+          this.$router.go();
+          this.$notify({
+            text: res.data,
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          this.$notify({
+            text: err.response.data,
+            type: "error",
+          });
+          console.log(err);
+        });
     },
   },
 };

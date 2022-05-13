@@ -114,6 +114,7 @@
           <h2 class="text-center header-text">{{ namePage }}</h2>
           <div class="mt-5">
             <DashboardHome v-if="home" />
+            <Transactions v-if="transactions" />
             <Usermanagement v-if="userManagement" />
             <ProfileData v-if="profileData" />
           </div>
@@ -134,6 +135,7 @@ import {
 } from "bootstrap-icons-vue";
 
 import DashboardHome from "../components/dashboard-components/DashboardHome.vue";
+import Transactions from "../components/dashboard-components/Transactions.vue";
 import Usermanagement from "../components/dashboard-components/UserManagement.vue";
 import ProfileData from "../components/dashboard-components/ProfileData.vue";
 
@@ -147,6 +149,7 @@ export default {
     BIconDiagram2,
     BIconPersonFill,
     DashboardHome,
+    Transactions,
     Usermanagement,
     ProfileData
 },
