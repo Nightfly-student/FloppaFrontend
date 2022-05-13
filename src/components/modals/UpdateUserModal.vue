@@ -128,7 +128,7 @@
               data-bs-dismiss="modal"
               class="btn btn-primary"
           >
-            Create User
+            Update User
           </button>
         </div>
       </div>
