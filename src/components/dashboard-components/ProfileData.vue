@@ -59,7 +59,16 @@
       </div>
       <div class="row mt-4">
         <div class="col d-flex justify-content-around">
-          <button class="btn btn-primary" @click="update">Update account data</button>
+
+          <button
+            @click="setUpdateUserData" 
+            :data-bs-target="'#askPassModal'"
+            data-bs-toggle="modal"
+            class="btn btn-primary">
+            Update account data              
+          </button>
+          <AskPassModal storeEvent="updateUser"/>
+
         </div>
       </div>
     </div>
@@ -67,81 +76,64 @@
 </template>
 
 <script>
+import AskPassModal from "../modals/AskPassModal.vue";
 
 export default {
-  name: "ProfileData",
-
-  methods:{
-    update(){
-
-      var updated = {
-        id: this.id,
-        firstname : this.firstname,
-        lastname : this.lastname,
-        email : this.email,
-        username : this.username,
-        address : this.address,
-        postalcode : this.postalcode,
-        dob : this.dob
-      }
-
-      this.$store.dispatch("updateUser", updated)
-      .then((data) => {
-        this.$notify({
-          text: "Updated account details successfully",
-          type: "success",
-        });
-      })
-      .catch((err) => {
-        console.warn(err)
-      })
-
-    }
-  },
-
-  data(){
-    return{
-      id: null,
-      firstname: null,
-      lastname: null,
-      address: null,
-      postalcode: null,
-      email: null,
-      username: null,
-      dob: null,
-      roles: []
-    }
-  },
-
-  watch:{
-    loggedInUser:{
-      handler(data){
-        
-      }
-    }
-  },
-
-  computed:{
-    loggedInUser(){
-      var data = this.$store.state.user
-      this.id = data.id
-      this.firstname = data.firstname
-      this.lastname = data.lastname
-      this.address = data.address
-      this.postalcode = data.postalcode
-      this.email = data.email
-      this.username = data.username
-      this.dob = data.dob
-
-      var userRoles = data.roles
-
-      userRoles.forEach((role, i) => {
-        this.roles += role.name
-        if(i < userRoles.length - 1) this.roles += ", "
-      });
-
-    }
-  }
+    name: "ProfileData",
+    methods: {
+        setUpdateUserData(){
+          var updated = {
+                id: this.id,
+                firstname: this.firstname,
+                lastname: this.lastname,
+                email: this.email,
+                username: this.username,
+                address: this.address,
+                postalcode: this.postalcode,
+                dob: this.dob
+          };
+          this.$store.state.updatedUserData = updated
+        },
+    },
+    data() {
+        return {
+            id: null,
+            firstname: null,
+            lastname: null,
+            address: null,
+            postalcode: null,
+            email: null,
+            username: null,
+            dob: null,
+            roles: []
+        };
+    },
+    watch: {
+        loggedInUser: {
+            handler(data) {
+            }
+        }
+    },
+    computed: {
+        loggedInUser() {
+            var data = this.$store.state.user;
+            this.id = data.id;
+            this.firstname = data.firstname;
+            this.lastname = data.lastname;
+            this.address = data.address;
+            this.postalcode = data.postalcode;
+            this.email = data.email;
+            this.username = data.username;
+            this.dob = data.dob;
+            var userRoles = data.roles;
+            userRoles.forEach((role, i) => {
+                this.roles += role.name;
+                if (i < userRoles.length - 1)
+                    this.roles += ", ";
+            });
+        }
+    },
+    components: { AskPassModal }
 }
 </script>
 
