@@ -38,7 +38,13 @@
           <td v-else>User</td>
           
           <td>2</td>
-          <td>Action</td>
+          <td><button
+              :data-bs-target="'#UpdateAccount'"
+              data-bs-toggle="modal"
+              class="btn btn-primary">
+              Edit
+              </button><UpdateUserModal />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -71,10 +77,12 @@
 
 <script>
 import AddUserModal from "../modals/AddUserModal.vue";
+import UpdateUserModal from "../modals/UpdateUserModal.vue";
 export default {
   name: "UserManagement",
   components: { 
-    AddUserModal 
+    AddUserModal,
+    UpdateUserModal
     
     },
   data() {
