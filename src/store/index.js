@@ -246,7 +246,32 @@ const store = createStore({
           reject(err.response.data.message)
         })
       })
+    },
+
+    getPasswordResetRequest({commit}, link){
+      return new Promise((resolve, reject) =>{
+        axios.get(`/api/v1/resetRequest/${link}`)
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((err) => {
+          reject(err.response.data.message)
+        })
+      })
+    },
+
+    updatePassword({commit}, data){
+      return new Promise((resolve, reject) => {
+        axios.put('/api/v1/users/updatePass', data)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err.response.data.message);
+        })
+      })
     }
+
     // autoLogin({ commit }) {
     //   const user = JSON.parse(localStorage.getItem("user"));
     //   if (user) {
