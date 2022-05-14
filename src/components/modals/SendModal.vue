@@ -80,14 +80,23 @@ export default {
       this.selected = false;
       axios
         .get(
-          `/api/v1/accounts/?limit=${this.limit}&offset=${this.offset}&q=${this.q}`,
+          `/api/v1/accounts/?limit=${this.limit}&offset=${this.offset}&q=${this.q.toUpperCase()}`,
           { headers: authHeader() }
         )
         .then((res) => {
           console.log(res.data);
 
           res.data.forEach((acc, i) => {
-            if (acc.iban != this.account.iban || this.account.accountType == "SAVINGS" && acc.userId == this.account.userId) this.accounts.push(acc);
+            console.log(acc.accountType + " " + acc.iban + " " + acc.user_id + " en " + this.account.userId);
+            if (this.account.accountType == "savings" && acc.user_id == this.account.userId || this.account.accountType == "regular") {
+              if (this.account.accountType == "regular" && acc.accountType == "savings" && acc.user_id == this.account.userId || this.account.accountType == "regular" && acc.accountType == "regular") {
+                if (acc.iban != this.account.iban) {
+                  if (acc.iban != "NL01INHO0000000001") {
+                    this.accounts.push(acc);
+                  }
+                }
+              }
+            }
           })
 
           if (this.accounts.length == 1) {
@@ -133,7 +142,6 @@ export default {
           });
         })
         .catch((err) => {
-          console.log(err);
           this.errorMsg = err.response.data;
           return;
         });

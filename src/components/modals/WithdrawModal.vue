@@ -59,7 +59,8 @@ export default {
         .then((res) => {
           this.$router.go();
           this.$notify({
-            text: res.data,
+            //text: res.data,
+            text: "Withdrawal succesful",
             type: "success",
           });
         })

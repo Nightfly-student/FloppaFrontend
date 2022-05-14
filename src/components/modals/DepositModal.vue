@@ -59,15 +59,13 @@ export default {
         .then((res) => {
           this.$router.go();
           this.$notify({
-            text: res.data,
+            //text: res.data,
+            text: "Deposit succesful",
             type: "success",
           });
         })
         .catch((err) => {
-          this.$notify({
-            text: err.response.data,
-            type: "error",
-          });
+          this.errorMsg = err.response.data;
           console.log(err);
         });
     },
