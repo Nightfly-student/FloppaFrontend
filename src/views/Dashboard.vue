@@ -73,6 +73,18 @@
 
               <li>
                 <a
+                    href="#"
+                    class="nav-link px-0 align-middle"
+                    @click="onClick('accountManagement'), (namePage = 'Account management')"
+                    :class="{ activeLink: accountManagement }"
+                >
+                  <BIconPersonPlus class="fs-4" />
+                  <span class="ms-1 d-none d-sm-inline">Account management</span></a
+                >
+              </li>
+
+              <li>
+                <a
                   href="#submenu3"
                   data-bs-toggle="collapse"
                   class="nav-link px-0 align-middle"
@@ -125,6 +137,7 @@
             <DashboardHome v-if="home" />
             <Transactions v-if="transactions" />
             <Usermanagement v-if="userManagement" />
+            <Accountmanagement v-if="accountManagement" />
             <ProfileData v-if="profileData" />
           </div>
         </div>
@@ -146,6 +159,7 @@ import {
 import DashboardHome from "../components/dashboard-components/DashboardHome.vue";
 import Transactions from "../components/dashboard-components/Transactions.vue";
 import Usermanagement from "../components/dashboard-components/UserManagement.vue";
+import Accountmanagement from "../components/dashboard-components/AccountManagement.vue";
 import ProfileData from "../components/dashboard-components/ProfileData.vue";
 import AskPassModal from "../components/modals/AskPassModal.vue";
 
@@ -161,6 +175,7 @@ export default {
     DashboardHome,
     Transactions,
     Usermanagement,
+    Accountmanagement,
     ProfileData,
     AskPassModal
 },
@@ -170,6 +185,7 @@ export default {
       this.transactions = false;
       this.settings = false;
       this.userManagement = false;
+      this.accountManagement = false;
       this.profileData = false;
       this[value] = true;
     },
@@ -180,6 +196,7 @@ export default {
       transactions: false,
       settings: false,
       userManagement: false,
+      accountManagement: false,
       namePage: "Dashboard",
     };
   },

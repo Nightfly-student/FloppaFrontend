@@ -12,7 +12,9 @@ const store = createStore({
       token: token ? token : null,
       isAuthenticated: token ? true : null,
       users: null,
+      accounts: null,
       totalUsersCount: null,
+      totalAccountsCount: null,
       roles: null,
       modalPassword: null,
       updatedUserData: null,
@@ -34,6 +36,9 @@ const store = createStore({
     },
     getUsersCount(state){
       return state.totalUsersCount
+    },
+    getAccountsCount(state){
+      return state.totalAccountsCount
     },
     getRoles(state){
       return state.roles
@@ -60,6 +65,10 @@ const store = createStore({
     userLoaded(state, payload){
       state.users = payload.users;
       state.totalUsersCount = payload.totalCount;
+    },
+    accountLoaded(state, payload){
+      state.accounts = payload.accounts;
+      state.totalAccountsCount = payload.totalCount;
     },
     rolesLoaded(state, payload){
       state.roles = payload.roles
@@ -126,6 +135,21 @@ const store = createStore({
         .catch((err) => {
           console.warn(err)
         })
+    },
+
+    loadAccounts({commit}, {limit, offset, filter}){
+      var url = `/api/v1/accounts?limit=${limit}&offset=${offset}`;
+
+      if(filter != undefined)url += `&filter=${filter}`; this.state.filtered = true;
+
+      axios.get(url)
+          .then((response) =>{
+            console.warn(response.data)
+            commit("accountLoaded",response.data)
+          })
+          .catch((err) => {
+            console.warn(err)
+          })
     },
 
     loadTransactions({commit}, {limit, offset}){

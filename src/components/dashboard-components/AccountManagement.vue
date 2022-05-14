@@ -1,0 +1,126 @@
+<template>
+  <div class="container-xl">
+    <div class="d-flex mb-2 justify-content-between">
+      <div class="entries d-flex justify-content-between gap-2">
+        <span>Showing</span>
+        <select name="" id="" v-model="limit">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25</option>
+        </select>
+        <span>Accounts of {{accountsCount}}</span>
+      </div>
+      <div class="search d-flex gap-2">
+        <Label>Search by</Label>
+        <input type="" id="" name="" v-model="filter"/>
+      </div>
+    </div>
+    <table class="table table-striped table-dark">
+      <thead>
+      <tr>
+        <th scope="col">First name</th>
+        <th scope="col">Last name</th>
+        <th scope="col">email</th>
+        <th scope="col">role</th>
+        <th scope="col">Accounts</th>
+        <th scope="col">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="account in accounts" :key="account.iban">
+        <td>{{ account.firstname }}</td>
+        <td>{{ account.lastname }}</td>
+        <td>{{ account.email }}</td>
+
+        <td v-if="user.roles.length > 1">Employee</td>
+        <td v-else>User</td>
+
+        <td>2</td>
+        <td><button
+            :data-bs-target="'#UpdateAccount'"
+            data-bs-toggle="modal"
+            class="btn btn-primary">
+          Edit
+        </button><UpdateUserModal />
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-between">
+      <button
+          :data-bs-target="'#CreateAccount'"
+          data-bs-toggle="modal"
+          class="btn btn-primary">
+        Add user
+      </button>
+      <AddUserModal />
+      <nav aria-label="...">
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item active">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</template>
+
+<script>
+//import AddUserModal from "../modals/AddUserModal.vue";
+//import UpdateUserModal from "../modals/UpdateUserModal.vue";
+export default {
+  name: "AccountManagement",
+  components: {
+   // AddUserModal,
+  //  UpdateUserModal
+
+  },
+  data() {
+    return {
+      currentPage: 1,
+      filter: "",
+      limit: 5
+    };
+  },
+  methods: {
+    loadAccounts() {
+      var offset = this.$store.state.accounts.length;
+      var limit = this.limit;
+      var filter = this.filter;
+      console.warn(`Filtering with limit ${limit}, offset ${offset}, filter ${filter}`)
+      this.$store.dispatch("loadAccounts", { offset: 0, limit: limit, filter: filter });
+    },
+  },
+  watch:{
+    filter(){
+      this.loadAccounts();
+    },
+    limit(){
+      this.loadAccounts();
+    }
+  },
+  mounted() {
+    this.$store.dispatch("loadAccounts", { offset: 0, limit: 5 });
+  },
+  computed: {
+    accounts() {
+      return this.$store.state.accounts;
+    },
+    accountsCount(){
+      return this.$store.state.totalAccountsCount;
+    }
+  },
+};
+</script>
+
+<style></style>
