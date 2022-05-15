@@ -39,7 +39,7 @@
           
           <td>2</td>
           <td><button
-              :data-bs-target="'#UpdateAccount'"
+              :data-bs-target="'#SS' + user.id"
               data-bs-toggle="modal"
               class="btn btn-primary">
               Edit
