@@ -42,7 +42,7 @@
             />
           </div>
           <div class="form-group mt-2">
-            <label for="">Deactivate Account</label>
+            <label>Deactivate Account</label>
             <input
                 type="checkbox"
                 v-model="freeze"

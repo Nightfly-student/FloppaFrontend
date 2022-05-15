@@ -39,8 +39,10 @@
         <td>{{ account.absoluteLimit }}</td>
         <td>{{ account.transactionLimit }}</td>
 
-        <td v-if="account.active">Active</td>
-        <td v-else>Not Active</td>
+        <td v-if="account.active"><button type="button" data-bs-dismiss="modal" @click="changeStatus(account)" class="btn btn-primary active">
+          Active
+        </button></td>
+        <td v-else><button type="button" data-bs-dismiss="modal" @click="changeStatus(account)" class="btn btn-primary deactive">Not Active</button></td>
         <td><button
             :data-bs-target="'#SS' + account.iban"
             data-bs-toggle="modal"
@@ -83,6 +85,7 @@
 //import UpdateUserModal from "../modals/UpdateUserModal.vue";
 import UpdateBankAccountModal from "../modals/UpdateEmployeeBankAccountModal.vue";
 import SelectedAccountModal from "./account-components/SelectedAccount.vue";
+import axios from "axios";
 export default {
   name: "AccountManagement",
   components: {
@@ -96,7 +99,8 @@ export default {
     return {
       currentPage: 1,
       filter: "",
-      limit: 5
+      limit: 5,
+      holdAccount: null,
     };
   },
   methods: {
@@ -106,6 +110,32 @@ export default {
       var filter = this.filter;
       console.warn(`Filtering with limit ${limit}, offset ${offset}, filter ${filter}`)
       this.$store.dispatch("loadAccounts", { offset: 0, limit: limit, filter: filter });
+    },
+
+    changeStatus(account) {
+      var fr;
+      fr = account.active ? false : true;
+      if (fr === null) {
+        return;
+      }
+      var data = {};
+      fr != null && (data.active = fr);
+      axios
+          .patch(`/api/v1/accounts/${account.iban}`, data)
+          .then((res) => {
+            fr != null && (account.active = fr);
+            this.$notify({
+              text: "Updated Bank Account Settings: Activate / Deactivate " + account.iban,
+              type: "success",
+            });
+            this.$emit("updateAccount", account);
+          })
+          .catch((err) => {
+            this.$notify({
+              text: err.response.data,
+              type: "error",
+            });
+          });
     },
   },
   watch:{
@@ -130,4 +160,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.active{
+  background-color: #090;
+}
+.deactive{
+  background-color: #900;
+}
+</style>
