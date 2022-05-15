@@ -20,42 +20,45 @@
     <table class="table table-striped table-dark">
       <thead>
       <tr>
-        <th scope="col">First name</th>
-        <th scope="col">Last name</th>
-        <th scope="col">email</th>
-        <th scope="col">role</th>
-        <th scope="col">Accounts</th>
+        <th scope="col">IBAN</th>
+        <th scope="col">User ID</th>
+        <th scope="col">Account Type</th>
+        <th scope="col">Balance</th>
+        <th scope="col">Absolute Limit</th>
+        <th scope="col">Transaction Limit</th>
+        <th scope="col">Status</th>
         <th scope="col">Actions</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="account in accounts" :key="account.iban">
-        <td>{{ account.firstname }}</td>
-        <td>{{ account.lastname }}</td>
-        <td>{{ account.email }}</td>
+      <tr v-for="account in accounts" :key="account.id">
+        <td>{{ account.iban }}</td>
+        <td>{{ account.userId }}</td>
+        <td>{{ account.accountType }}</td>
+        <td>{{ account.balance }}</td>
+        <td>{{ account.absoluteLimit }}</td>
+        <td>{{ account.transactionLimit }}</td>
 
-        <td v-if="user.roles.length > 1">Employee</td>
-        <td v-else>User</td>
-
-        <td>2</td>
+        <td v-if="account.active">Active</td>
+        <td v-else>Not Active</td>
         <td><button
-            :data-bs-target="'#UpdateAccount'"
+            :data-bs-target="'#SS' + account.iban"
             data-bs-toggle="modal"
             class="btn btn-primary">
           Edit
-        </button><UpdateUserModal />
+        </button><UpdateBankAccountModal :account="account" @updateAccount="updatedAccount" />
         </td>
       </tr>
       </tbody>
     </table>
     <div class="d-flex justify-content-between">
-      <button
+      <!-- <button
           :data-bs-target="'#CreateAccount'"
           data-bs-toggle="modal"
           class="btn btn-primary">
-        Add user
+        Add Account
       </button>
-      <AddUserModal />
+      <AddUserModal /> -->
       <nav aria-label="...">
         <ul class="pagination">
           <li class="page-item disabled">
@@ -78,11 +81,15 @@
 <script>
 //import AddUserModal from "../modals/AddUserModal.vue";
 //import UpdateUserModal from "../modals/UpdateUserModal.vue";
+import UpdateBankAccountModal from "../modals/UpdateBankAccountModal.vue";
+import SelectedAccountModal from "./account-components/SelectedAccount.vue";
 export default {
   name: "AccountManagement",
   components: {
-   // AddUserModal,
-  //  UpdateUserModal
+    UpdateBankAccountModal,
+    //AddUserModal,
+    //UpdateUserModal
+    SelectedAccountModal
 
   },
   data() {

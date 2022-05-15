@@ -37,6 +37,9 @@ const store = createStore({
     getUsersCount(state){
       return state.totalUsersCount
     },
+    getAccounts(state){
+      return state.accounts
+    },
     getAccountsCount(state){
       return state.totalAccountsCount
     },
@@ -67,8 +70,8 @@ const store = createStore({
       state.totalUsersCount = payload.totalCount;
     },
     accountLoaded(state, payload){
-      state.accounts = payload.accounts;
-      state.totalAccountsCount = payload.totalCount;
+      state.accounts = payload.accountDTOList;
+      state.totalAccountsCount = payload.count;
     },
     rolesLoaded(state, payload){
       state.roles = payload.roles
