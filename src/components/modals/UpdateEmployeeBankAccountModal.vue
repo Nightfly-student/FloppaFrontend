@@ -108,7 +108,6 @@ export default {
       }
       if (this.freeze != this.holdFreeze) {
         fr = this.freeze ? false : true;
-        console.log("test");
       }
       if (type === null && limit === null && absoluteLimit === null && fr === null) {
         return;
