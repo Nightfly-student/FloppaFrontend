@@ -81,7 +81,7 @@
 <script>
 //import AddUserModal from "../modals/AddUserModal.vue";
 //import UpdateUserModal from "../modals/UpdateUserModal.vue";
-import UpdateBankAccountModal from "../modals/UpdateBankAccountModal.vue";
+import UpdateBankAccountModal from "../modals/UpdateEmployeeBankAccountModal.vue";
 import SelectedAccountModal from "./account-components/SelectedAccount.vue";
 export default {
   name: "AccountManagement",
