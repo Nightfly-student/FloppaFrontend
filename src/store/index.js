@@ -297,24 +297,20 @@ const store = createStore({
           reject(err.response.data.message);
         })
       })
+    },
+
+    updateUserAccountAsEmployee({commit}, data) {
+      return new Promise((resolve, reject) => {
+        axios.put(`/api/v1/employee/editUserAccount/${data.id}`, data)
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((err) => {
+          reject(err.response.data.message)
+        })
+      })
     }
 
-    // autoLogin({ commit }) {
-    //   const user = JSON.parse(localStorage.getItem("user"));
-    //   if (user) {
-    //     axios
-    //       .get("/api/users/autologin", {
-    //         headers: authHeader(),
-    //       })
-    //       .then((res) => {
-    //         commit("loginSuccesful", user);
-    //       })
-    //       .catch((err) => {
-    //         localStorage.removeItem("user");
-    //         commit("logout");
-    //       });
-    //   }
-    // },
   },
 });
 

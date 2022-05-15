@@ -43,7 +43,8 @@
               data-bs-toggle="modal"
               class="btn btn-primary">
               Edit
-              </button><UpdateUserModal />
+              </button>
+              <UpdateUserModal :user="user"/>
           </td>
         </tr>
       </tbody>

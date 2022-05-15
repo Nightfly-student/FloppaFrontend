@@ -124,7 +124,7 @@
           </button>
           <button
               type="button"
-              @click="updateUser"
+              @click="update"
               data-bs-dismiss="modal"
               class="btn btn-primary"
           >
@@ -137,18 +137,16 @@
 </template>
 
 <script>
-/*
-import Multiselect from "@vueform/multiselect";
-import axios from "axios";
 
+import axios from "axios";
 export default {
   name: "UpdateUserModal",
-  components: { Multiselect },
   props: {
     user: Object,
   },
   data() {
     return {
+      id: this.user.id,
       firstname: this.user.firstname,
       lastname: this.user.lastname,
       email: this.user.email,
@@ -156,81 +154,42 @@ export default {
       postalcode: this.user.postalcode,
       username: this.user.username,
       dob: this.user.dob,
-      selectedRoles: this.user.roles,
-    };
-  },
-  mounted(){
-    this.$store.dispatch("loadRoles", {limit: 5, offset: 0})
-  },
-  computed:{
-    loadedRoles(){
-      var loadedRoles = this.$store.state.roles;
-
-      var roles = [];
-
-      if(loadedRoles != null){
-        loadedRoles.map((role) => {
-          var roleItem = {label: role.name, value: role}
-          roles.push(roleItem)
-        })
-      }
-
-      return roles
-
-    }
-  },
-  methods: {
-    updateUser(){
-      var user = {
-        firstname: this.firstname,
-        lastname: this.lastname,
-        email: this.email,
-        address: this.address,
-        postalcode: this.postalcode,
-        username: this.username,
-        dob: this.dob,
-        roles: this.selectedRoles
-      }
-
-      this.$store.dispatch("updateUser", user)
-          .then((newUser) => {
-            this.$notify({
-              text: "Updated user successfully",
-              type: "success",
-            });
-          })
-          .catch((err) => {
-            this.$notify({
-              text: err.response.data,
-              type: "error",
-            });
-            console.log(err);
-          })
-
-    }
-  },
-};
-*/
-import axios from "axios";
-export default {
-  name: "UpdateUserModal",
-  props: {
-    user: Object,
-  },
-  data() {
-    return {
-      firstname: this.firstname,
-      lastname: this.lastname,
-      email: this.email,
-      address: this.address,
-      postalcode: this.postalcode,
-      username: this.username,
-      dob: this.dob,
       selectedRoles: [],
-      holdUser: this.user,
+      holdUser: this.user.user,
     };
   },
   methods: {
+
+    update(){
+      var data = {
+        "id" : this.id,
+        "firstname":this.firstname,
+        "lastname":this.lastname,
+        "email":this.email,
+        "address":this.address,
+        "postalcode":this.postalcode,
+        "username":this.username,
+        "dob":this.dob
+      }
+
+      console.log(data)
+
+      this.$store.dispatch("updateUserAccountAsEmployee", data)
+      .then(() => {
+        this.$notify({
+          text: "Updated account succesfully",
+          type: "success",
+        });
+      })
+      .catch((message) => {
+        this.$notify({
+          text: message,
+          type: "error",
+        });
+      })
+
+    },
+
     onUpdate() {
       var first;
       var last;
