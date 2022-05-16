@@ -15,7 +15,7 @@
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <label for="">First name</label>
+                <label>First name</label>
                 <input
                     type="text"
                     class="form-control"
@@ -26,7 +26,7 @@
             </div>
             <div class="col">
               <div class="form-group">
-                <label for="">Last name</label>
+                <label>Last name</label>
                 <input
                     type="text"
                     class="form-control"
@@ -39,7 +39,7 @@
           <div class="row mt-2">
             <div class="col">
               <div class="form-group">
-                <label for="">Email address</label>
+                <label>Email address</label>
                 <input
                     type="email"
                     class="form-control"
@@ -52,7 +52,7 @@
           <div class="row mt-2">
             <div class="col">
               <div class="form-group">
-                <label for="">Address</label>
+                <label>Address</label>
                 <input
                     type="text"
                     class="form-control"
@@ -63,7 +63,7 @@
             </div>
             <div class="col">
               <div class="form-group">
-                <label for="">Postal code</label>
+                <label>Postal code</label>
                 <input
                     type="text"
                     class="form-control"
@@ -76,7 +76,7 @@
           <div class="row mt-2">
             <div class="col">
               <div class="form-group">
-                <label for="">Username</label>
+                <label>Username</label>
                 <input
                     type="text"
                     class="form-control"
@@ -87,7 +87,7 @@
             </div>
             <div class="col">
               <div class="form-group">
-                <label for="">Date of birth</label>
+                <label>Date of birth</label>
                 <input
                     type="date"
                     class="form-control"
@@ -154,7 +154,7 @@ export default {
       postalcode: this.user.postalcode,
       username: this.user.username,
       dob: this.user.dob,
-      selectedRoles: [],
+      selectedRoles: this.user.roles,
       holdUser: this.user.user,
     };
   },
@@ -188,94 +188,6 @@ export default {
         });
       })
 
-    },
-
-    onUpdate() {
-      var first;
-      var last;
-      var em;
-      var add;
-      var pc;
-      var un;
-      var dateob;
-      /*
-      var roles;
-
-      if (this.value != this.account.accountType) {
-        if (this.value.includes("regular")) {
-          type = "1";
-        }
-        if (this.value.includes("savings")) {
-          type = "0";
-        }
-      }*/
-      if (this.firstname != this.user.firstname) {
-        first = this.firstname;
-      }
-      if (this.lastname != this.user.lastname) {
-        last = this.lastname;
-      }
-      if (this.email != this.user.email) {
-        em = this.email;
-      }
-      if (this.address != this.user.address) {
-        add = this.address;
-      }
-      if (this.postalcode != this.user.postalcode) {
-        pc = this.postalcode;
-      }
-      if (this.username != this.user.username) {
-        un = this.username;
-      }
-      if (this.dob != this.user.dob) {
-        dateob = this.dob;
-      }
-      /*
-      if (this.transactionLimit != this.account.transactionLimit) {
-        limit = this.transactionLimit;
-      }
-      if (this.freeze != this.holdFreeze) {
-        fr = this.freeze ? false : true;
-        console.log("hi");
-      }*/
-      if (first === null && last === null && em === null && add === null && pc === null && em === null && un === null && dateob === null) {
-        return;
-      }
-      var data = {};
-
-      //type && (data.accountType = parseInt(type));
-      first && (data.firstname = first);
-      last && (data.lastname = last);
-      em && (data.email = em);
-      add && (data.address = add);
-      pc && (data.postalcode = pc);
-      un && (data.username = un);
-      dateob && (data.dob = dateob);
-      //fr != null && (data.active = fr);
-      axios
-          .patch(`/api/v1/users/${this.user.userId}`, data)
-          .then((res) => {
-            //type && (this.holdUser.accountType = this.value);
-            first && (this.holdUser.firstname = first);
-            last && (this.holdUser.lastname = last);
-            em && (this.holdUser.email = em);
-            add && (this.holdUser.address = add);
-            pc && (this.holdUser.postalcode = pc);
-            un && (this.holdUser.username = un);
-            dateob && (this.holdUser.dob = dateob);
-            //fr != null && (this.holdAccount.active = fr);
-            this.$notify({
-              text: "Updated User Settings",
-              type: "success",
-            });
-            this.$emit("updateUser", this.holdUser);
-          })
-          .catch((err) => {
-            this.$notify({
-              text: err.response.data,
-              type: "error",
-            });
-          });
     },
   },
 };
