@@ -81,17 +81,12 @@
 </template>
 
 <script>
-//import AddUserModal from "../modals/AddUserModal.vue";
-//import UpdateUserModal from "../modals/UpdateUserModal.vue";
 import UpdateBankAccountModal from "../modals/UpdateEmployeeBankAccountModal.vue";
 import SelectedAccountModal from "./account-components/SelectedAccount.vue";
-import axios from "axios";
 export default {
   name: "AccountManagement",
   components: {
     UpdateBankAccountModal,
-    //AddUserModal,
-    //UpdateUserModal
     SelectedAccountModal
 
   },
@@ -100,7 +95,6 @@ export default {
       currentPage: 1,
       filter: "",
       limit: 5,
-      holdAccount: null,
     };
   },
   methods: {
@@ -113,22 +107,15 @@ export default {
     },
 
     changeStatus(account) {
-      var fr;
-      fr = account.active ? false : true;
-      if (fr === null) {
-        return;
-      }
-      var data = {};
-      fr != null && (data.active = fr);
-      axios
-          .patch(`/api/v1/accounts/${account.iban}`, data)
-          .then((res) => {
+      var fr = account.active ? false : true;
+      fr != null && (account.active = fr);
+      this.$store.dispatch("updateAccount", account)
+          .then(() => {
             fr != null && (account.active = fr);
             this.$notify({
-              text: "Updated Bank Account Settings: Activate / Deactivate " + account.iban,
+              text: "Updated Account: " + account.active,
               type: "success",
             });
-            this.$emit("updateAccount", account);
           })
           .catch((err) => {
             this.$notify({

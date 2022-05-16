@@ -309,6 +309,19 @@ const store = createStore({
           reject(err.response.data.message)
         })
       })
+    },
+
+    updateAccount({commit}, data) {
+      return new Promise((resolve, reject) => {
+        data.accountType = parseInt(data.accountType);
+        axios.patch(`/api/v1/accounts/${data.iban}`, data)
+            .then((response) => {
+              resolve(response.data)
+            })
+            .catch((err) => {
+              reject(err.response.data.message)
+            })
+      })
     }
 
   },

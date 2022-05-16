@@ -25,6 +25,7 @@
           <th scope="col">email</th>
           <th scope="col">role</th>
           <th scope="col">Accounts</th>
+          <th scope="col">Status</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -33,11 +34,11 @@
           <td>{{ user.firstname }}</td>
           <td>{{ user.lastname }}</td>
           <td>{{ user.email }}</td>
-
           <td v-if="user.roles.length > 1">Employee</td>
           <td v-else>User</td>
-          
           <td>2</td>
+          <td v-if="user.is_active"><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary">Active</button></td>
+          <td v-else><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary deactive">Not Active</button></td>
           <td><button
               :data-bs-target="'#SS' + user.id"
               data-bs-toggle="modal"
@@ -100,6 +101,25 @@ export default {
       var filter = this.filter;
       console.warn(`Filtering with limit ${limit}, offset ${offset}, filter ${filter}`)
       this.$store.dispatch("loadUsers", { offset: 0, limit: limit, filter: filter });
+    },
+
+    changeActive(user) {
+      var fr = user.is_active ? false : true;
+      fr != null && (user.is_active = fr);
+      this.$store.dispatch("updateUserAccountAsEmployee", user)
+          .then(() => {
+            fr != null && (user.is_active = fr);
+            this.$notify({
+              text: "Updated User Status to Active / Not Active: " + user.is_active,
+              type: "success",
+            });
+          })
+          .catch((err) => {
+            this.$notify({
+              text: err.response.data,
+              type: "error",
+            });
+          });
     },
   },
   watch:{
