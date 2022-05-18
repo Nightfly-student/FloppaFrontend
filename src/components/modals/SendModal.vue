@@ -41,7 +41,7 @@
           <p class="text-danger">{{ errorMsg }}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
           <button type="button" @click="sendMoney" class="btn btn-primary">
@@ -55,7 +55,7 @@
 
 <script>
 import axios from "axios";
-import { authHeader, getUserName } from "../../helpers/authHeader";
+import { getUserName } from "../../helpers/authHeader";
 export default {
   name: "SendModal",
   props: {
@@ -72,6 +72,7 @@ export default {
       searched: false,
       selected: false,
       selectedIban: "",
+      holdAccount: this.account,
     };
   },
   methods: {
@@ -79,19 +80,19 @@ export default {
       this.searched = false;
       this.selected = false;
       axios
-        .get(
-          `/api/v1/accounts/?limit=${this.limit}&offset=${this.offset}&q=${this.q.toUpperCase()}`,
-          { headers: authHeader() }
-        )
+        .get(`/api/v1/accounts/?limit=${this.limit}&offset=${this.offset}&q=${this.q.toUpperCase()}`)
         .then((res) => {
           console.log(res.data);
 
           res.data.forEach((acc, i) => {
             console.log(acc.accountType + " " + acc.iban + " " + acc.user_id + " en " + this.account.userId);
-            if (this.account.accountType == "savings" && acc.user_id == this.account.userId || this.account.accountType == "regular") {
-              if (this.account.accountType == "regular" && acc.accountType == "savings" && acc.user_id == this.account.userId || this.account.accountType == "regular" && acc.accountType == "regular") {
-                if (acc.iban != this.account.iban) {
-                  if (acc.iban != "NL01INHO0000000001") {
+
+            if (acc.iban != this.account.iban) {
+              if (acc.iban != "NL01INHO0000000001") {
+                if (this.account.accountType == "regular" && acc.accountType == "savings" && acc.user_id == this.account.userId || this.account.accountType == "regular" && acc.accountType == "regular" || this.account.accountType == "savings" && acc.user_id == this.account.userId) {
+                  if (this.account.accountType == "savings" && acc.user_id == this.account.userId) {
+                    this.accounts.push(acc);
+                  } else if (this.account.accountType == "regular") {
                     this.accounts.push(acc);
                   }
                 }
@@ -119,6 +120,12 @@ export default {
       this.selected = true;
     },
     sendMoney() {
+      var value;
+
+      if (this.value != this.account.balance) {
+        value = this.value;
+      }
+
       if (!this.selectedIban) {
         this.errorMsg = "No IBAN selected";
         return;
@@ -135,11 +142,13 @@ export default {
           userPerforming: getUserName(),
         })
         .then((res) => {
-          this.$router.go();
+          this.value = this.account.balance - value;
+          value && (this.holdAccount.balance = this.value);
           this.$notify({
             text: res.data,
             type: "success",
           });
+          document.getElementById('close').click();
         })
         .catch((err) => {
           this.errorMsg = err.response.data;
@@ -156,7 +165,7 @@ export default {
 }
 
 .table-height {
-  height: 75px;
+  height: 125px;
   overflow: auto;
 }
 </style>

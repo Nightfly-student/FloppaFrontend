@@ -78,7 +78,7 @@ const store = createStore({
     },
     transactionLoaded(state, payload){
       state.transactions = payload.transactions;
-      state.totalTransactionCount = payload.totalCount;
+      state.totalTransactionsCount = payload.totalCount;
     },
     updateUserDetails(state, payload){
 
