@@ -4,12 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Deposit</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p>Current Balance: &euro; {{ account.balance.toFixed(2) }}</p>
@@ -17,11 +12,7 @@
           <p class="text-danger">{{ errorMsg }}</p>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
+          <button type="button" id="closeDeposit" class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
           <button type="button" @click="depositMoney" class="btn btn-primary">
@@ -44,10 +35,17 @@ export default {
     return {
       value: 1,
       errorMsg: "",
+      holdAccount: this.account,
     };
   },
   methods: {
     depositMoney() {
+      var value;
+
+      if (this.value != this.account.balance) {
+        value = this.value;
+      }
+
       if (this.value <= 0) {
         this.errorMsg = "Unlogical Amount";
         return;
@@ -57,12 +55,14 @@ export default {
           amount: this.value,
         })
         .then((res) => {
-          this.$router.go();
+          this.value = this.account.balance + value;
+          value && (this.holdAccount.balance = this.value);
           this.$notify({
             //text: res.data,
             text: "Deposit succesful",
             type: "success",
           });
+          document.getElementById('closeDeposit').click();
         })
         .catch((err) => {
           this.errorMsg = err.response.data;
@@ -73,4 +73,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

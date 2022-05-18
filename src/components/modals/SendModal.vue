@@ -41,7 +41,7 @@
           <p class="text-danger">{{ errorMsg }}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">
+          <button type="button" id="closeSend" class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
           <button type="button" @click="sendMoney" class="btn btn-primary">
@@ -148,7 +148,7 @@ export default {
             text: res.data,
             type: "success",
           });
-          document.getElementById('close').click();
+          document.getElementById('closeSend').click();
         })
         .catch((err) => {
           this.errorMsg = err.response.data;
