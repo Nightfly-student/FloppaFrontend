@@ -24,6 +24,7 @@
           <th scope="col">Last name</th>
           <th scope="col">email</th>
           <th scope="col">role</th>
+          <th scope="col">Daily Limit</th>
           <th scope="col">Accounts</th>
           <th scope="col">Status</th>
           <th scope="col">Actions</th>
@@ -36,6 +37,7 @@
           <td>{{ user.email }}</td>
           <td v-if="user.roles.length > 1">Employee</td>
           <td v-else>User</td>
+          <td>{{ user.daily_limit }}</td>
           <td>2</td>
           <td v-if="user.is_active"><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary">Active</button></td>
           <td v-else><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary deactive">Not Active</button></td>
