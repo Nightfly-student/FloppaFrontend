@@ -139,8 +139,10 @@
 <script>
 
 import axios from "axios";
+import Multiselect from "@vueform/multiselect";
 export default {
   name: "UpdateUserModal",
+  components: { Multiselect },
   props: {
     user: Object,
   },
@@ -158,6 +160,26 @@ export default {
       holdUser: this.user.user,
     };
   },
+  mounted(){
+    this.$store.dispatch("loadRoles", {limit: 5, offset: 0})
+  },
+  computed:{
+    loadedRoles(){
+      var loadedRoles = this.$store.state.roles;
+
+      var roles = [];
+
+      if(loadedRoles != null){
+        loadedRoles.map((role) => {
+          var roleItem = {label: role.name, value: role}
+          roles.push(roleItem)
+        })
+      }
+
+      return roles
+
+    }
+  },
   methods: {
 
     update(){
@@ -169,6 +191,7 @@ export default {
         "address":this.address,
         "postalcode":this.postalcode,
         "username":this.username,
+        "roles": this.selectedRoles,
         "dob":this.dob
       }
 
