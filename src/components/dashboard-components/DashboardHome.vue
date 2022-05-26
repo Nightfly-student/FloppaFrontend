@@ -4,7 +4,7 @@
     <div v-if="selected">
       <SelectedAccount
         v-if="mounted"
-        :account="selectedAccount"
+        :account="selectedAccount" :accounts="accounts"
         @updateAccount="updatedAccount"
       />
     </div>

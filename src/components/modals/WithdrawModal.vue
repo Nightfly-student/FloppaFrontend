@@ -63,10 +63,11 @@ export default {
             type: "success",
           });
           document.getElementById('closeWithdraw').click();
+          this.value = 1;
         })
         .catch((err) => {
           console.log(err);
-          this.errorMsg = err.response.data;
+          this.errorMsg = err.response.data.error_message;
           return;
         });
     },

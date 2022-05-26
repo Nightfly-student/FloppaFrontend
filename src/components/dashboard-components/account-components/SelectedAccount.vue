@@ -12,7 +12,7 @@
       <button :data-bs-target="'#S' + account.iban" data-bs-toggle="modal" class="btn btn-primary m-3 fs-4">
         Send Money
       </button>
-      <SendModal :account="account" />
+      <SendModal :account="account" :accountArray="accounts" />
 
       <!--<button class="btn btn-primary m-3 fs-4">Deposit</button>-->
 
@@ -48,6 +48,9 @@ export default {
   },
   props: {
     account: Object,
+    accounts: {
+      type: Array
+    }
   },
   methods: {
     updatedAccount(account) {

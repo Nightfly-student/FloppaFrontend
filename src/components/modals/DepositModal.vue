@@ -63,9 +63,10 @@ export default {
             type: "success",
           });
           document.getElementById('closeDeposit').click();
+          this.value = 1;
         })
         .catch((err) => {
-          this.errorMsg = err.response.data;
+          this.errorMsg = err.response.data.error_message;
           console.log(err);
         });
     },
