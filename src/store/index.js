@@ -175,8 +175,7 @@ const store = createStore({
           resolve(response.data)
         })
         .catch((err) => {
-          console.warn(err)
-          reject(err)
+          reject(err.response.data)
         })
       })
       

@@ -5,6 +5,7 @@
         <div class="modal-header">
           <h5 class="modal-title">Register New User</h5>
           <button
+            id="closer"
             type="button"
             class="btn-close"
             data-bs-dismiss="modal"
@@ -125,7 +126,6 @@
           <button
             type="button"
             @click="registerUser"
-            data-bs-dismiss="modal"
             class="btn btn-primary"
           >
             Create User
@@ -154,7 +154,7 @@ export default {
       address: "voortreft 11",
       postalcode: "5166DD",
       username: "sjonny55",
-      dob: "",
+      dob: "1990-01-01",
       selectedRoles: [],
     };
   },
@@ -170,9 +170,15 @@ export default {
       if(loadedRoles != null){
         loadedRoles.map((role) => {
           var roleItem = {label: role.name, value: role}
+
+          if(roleItem.label === "USER" && this.selectedRoles.length == 0){
+            this.selectedRoles.push(role)
+          }
+
           roles.push(roleItem)
         })
       }
+
 
       return roles
 
@@ -193,6 +199,10 @@ export default {
 
       this.$store.dispatch("registerUser", user)
       .then((newUser) => {
+
+        document.getElementById('closer').click();
+
+
         this.$notify({
           text: "Registered new user successfully",
           type: "success",
@@ -200,10 +210,9 @@ export default {
       })
       .catch((err) => {
         this.$notify({
-          text: err.response.data,
+          text: err,
           type: "error",
           });
-        console.log(err);
       })
 
     }
