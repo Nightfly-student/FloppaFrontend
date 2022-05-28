@@ -48,7 +48,12 @@
           >
             Close
           </button>
-          <button type="button" data-bs-dismiss="modal" @click="onUpdate" class="btn btn-primary">
+          <button
+            type="button"
+            data-bs-dismiss="modal"
+            @click="onUpdate"
+            class="btn btn-primary"
+          >
             Update
           </button>
         </div>
@@ -90,9 +95,16 @@ export default {
       if (this.transactionLimit != this.account.transactionLimit) {
         limit = this.transactionLimit;
       }
+      if (this.transactionLimit < 0) {
+        this.$notify({
+          text: "Failed To Update: Not Allowed to go below 0",
+          type: "error",
+        });
+        return;
+      }
+
       if (this.freeze != this.holdFreeze) {
         fr = this.freeze ? false : true;
-        console.log("hi");
       }
       if (type === null && limit === null && fr === null) {
         return;
@@ -116,7 +128,7 @@ export default {
         })
         .catch((err) => {
           this.$notify({
-            text: err.response.data,
+            text: err.response.error,
             type: "error",
           });
         });

@@ -12,7 +12,9 @@ const store = createStore({
       token: token ? token : null,
       isAuthenticated: token ? true : null,
       users: null,
+      accounts: null,
       totalUsersCount: null,
+      totalAccountsCount: null,
       roles: null,
       modalPassword: null,
       updatedUserData: null,
@@ -34,6 +36,12 @@ const store = createStore({
     },
     getUsersCount(state){
       return state.totalUsersCount
+    },
+    getAccounts(state){
+      return state.accounts
+    },
+    getAccountsCount(state){
+      return state.totalAccountsCount
     },
     getRoles(state){
       return state.roles
@@ -61,12 +69,16 @@ const store = createStore({
       state.users = payload.users;
       state.totalUsersCount = payload.totalCount;
     },
+    accountLoaded(state, payload){
+      state.accounts = payload.accountDTOList;
+      state.totalAccountsCount = payload.count;
+    },
     rolesLoaded(state, payload){
       state.roles = payload.roles
     },
     transactionLoaded(state, payload){
       state.transactions = payload.transactions;
-      state.totalTransactionCount = payload.totalCount;
+      state.totalTransactionsCount = payload.totalCount;
     },
     updateUserDetails(state, payload){
 
@@ -126,6 +138,21 @@ const store = createStore({
         .catch((err) => {
           console.warn(err)
         })
+    },
+
+    loadAccounts({commit}, {limit, offset, filter}){
+      var url = `/api/v1/accounts?limit=${limit}&offset=${offset}`;
+
+      if(filter != undefined)url += `&filter=${filter}`; this.state.filtered = true;
+
+      axios.get(url)
+          .then((response) =>{
+            console.warn(response.data)
+            commit("accountLoaded",response.data)
+          })
+          .catch((err) => {
+            console.warn(err)
+          })
     },
 
     loadTransactions({commit}, {limit, offset}){
@@ -270,24 +297,33 @@ const store = createStore({
           reject(err.response.data.message);
         })
       })
+    },
+
+    updateUserAccountAsEmployee({commit}, data) {
+      return new Promise((resolve, reject) => {
+        axios.put(`/api/v1/employee/editUserAccount/${data.id}`, data)
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((err) => {
+          reject(err.response.data.message)
+        })
+      })
+    },
+
+    updateAccount({commit}, data) {
+      return new Promise((resolve, reject) => {
+        data.accountType = parseInt(data.accountType);
+        axios.patch(`/api/v1/accounts/${data.iban}`, data)
+            .then((response) => {
+              resolve(response.data)
+            })
+            .catch((err) => {
+              reject(err.response.data.message)
+            })
+      })
     }
 
-    // autoLogin({ commit }) {
-    //   const user = JSON.parse(localStorage.getItem("user"));
-    //   if (user) {
-    //     axios
-    //       .get("/api/users/autologin", {
-    //         headers: authHeader(),
-    //       })
-    //       .then((res) => {
-    //         commit("loginSuccesful", user);
-    //       })
-    //       .catch((err) => {
-    //         localStorage.removeItem("user");
-    //         commit("logout");
-    //       });
-    //   }
-    // },
   },
 });
 

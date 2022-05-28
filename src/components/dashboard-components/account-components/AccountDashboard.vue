@@ -9,7 +9,8 @@
           <p>{{ account.accountType }}</p>
         </div>
       </div>
-      <h2>&euro; {{account.balance.toFixed(2)}}</h2>
+      <h2 v-if="account.balance >= 0">&euro; {{account.balance.toFixed(2)}}</h2>
+      <h2 v-else class="text-danger">&euro; {{account.balance.toFixed(2)}}</h2>
     </div>
   </div>
 </template>

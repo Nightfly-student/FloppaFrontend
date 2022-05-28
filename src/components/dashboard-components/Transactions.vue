@@ -12,10 +12,6 @@
         </select>
         <span>transactions of {{transactionsCount}}</span>
       </div>
-      <div class="search d-flex gap-2">
-        <Label>Search by</Label>
-        <input type="" id="" name="" v-model="filter"/>
-      </div>
     </div>
     <table class="table table-striped table-dark">
       <thead>
@@ -59,16 +55,10 @@
           <td>{{ transaction.user_performing }}</td>
           <td>{{ formatTime(transaction.transaction_date) }}</td>
 
-          <!--
-          <td v-if="user.roles.length > 1">Employee</td>
-          <td v-else>User</td>
-          
-          <td>2</td>
-          <td>Action</td>-->
         </tr>
       </tbody>
     </table>
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between float-end">
       <nav aria-label="...">
         <ul class="pagination">
           <li class="page-item disabled">

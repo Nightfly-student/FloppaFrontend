@@ -23,16 +23,6 @@
               >Home</router-link
             >
           </li>
-          <li class="nav-item">
-            <router-link class="nav-item nav-link nav-router text-white" to="/"
-              >Home</router-link
-            >
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-item nav-link nav-router text-white" to="/"
-              >Home</router-link
-            >
-          </li>
           <li v-if="this.$store.getters.isLogged" class="nav-item">
             <router-link class="nav-item nav-link nav-router text-white" to="/dashboard"
               >Dashboard</router-link

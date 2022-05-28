@@ -24,7 +24,9 @@
           <th scope="col">Last name</th>
           <th scope="col">email</th>
           <th scope="col">role</th>
+          <th scope="col">Daily Limit</th>
           <th scope="col">Accounts</th>
+          <th scope="col">Status</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -33,12 +35,20 @@
           <td>{{ user.firstname }}</td>
           <td>{{ user.lastname }}</td>
           <td>{{ user.email }}</td>
-
           <td v-if="user.roles.length > 1">Employee</td>
           <td v-else>User</td>
-          
+          <td>{{ user.daily_limit }}</td>
           <td>2</td>
-          <td>Action</td>
+          <td v-if="user.is_active"><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary">Active</button></td>
+          <td v-else><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary deactive">Not Active</button></td>
+          <td><button
+              :data-bs-target="'#SS' + user.id"
+              data-bs-toggle="modal"
+              class="btn btn-primary">
+              Edit
+              </button>
+              <UpdateUserModal :user="user"/>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -71,10 +81,12 @@
 
 <script>
 import AddUserModal from "../modals/AddUserModal.vue";
+import UpdateUserModal from "../modals/UpdateUserModal.vue";
 export default {
   name: "UserManagement",
   components: { 
-    AddUserModal 
+    AddUserModal,
+    UpdateUserModal
     
     },
   data() {
@@ -91,6 +103,25 @@ export default {
       var filter = this.filter;
       console.warn(`Filtering with limit ${limit}, offset ${offset}, filter ${filter}`)
       this.$store.dispatch("loadUsers", { offset: 0, limit: limit, filter: filter });
+    },
+
+    changeActive(user) {
+      var fr = user.is_active ? false : true;
+      fr != null && (user.is_active = fr);
+      this.$store.dispatch("updateUserAccountAsEmployee", user)
+          .then(() => {
+            fr != null && (user.is_active = fr);
+            this.$notify({
+              text: "Updated User Status to Active / Not Active: " + user.is_active,
+              type: "success",
+            });
+          })
+          .catch((err) => {
+            this.$notify({
+              text: err.response.data,
+              type: "error",
+            });
+          });
     },
   },
   watch:{
