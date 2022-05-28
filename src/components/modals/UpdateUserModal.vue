@@ -100,6 +100,20 @@
 
           <div class="row mt-2">
             <div class="col">
+              <div class="form-group">
+                <label>Daily Limit</label>
+                <input
+                    type="number"
+                    class="form-control"
+                    v-model="daily_limit"
+                    placeholder="Set a Daily Limit"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col">
               <label>Roles</label>
               <multiselect
                   mode="tags"
@@ -156,7 +170,9 @@ export default {
       postalcode: this.user.postalcode,
       username: this.user.username,
       dob: this.user.dob,
-      selectedRoles: this.user.roles,
+      daily_limit: this.user.daily_limit,
+      //selectedRoles: this.user.selectedRoles,
+      is_active: this.user.is_active,
       holdUser: this.user.user,
     };
   },
@@ -191,7 +207,9 @@ export default {
         "address":this.address,
         "postalcode":this.postalcode,
         "username":this.username,
-        "roles": this.selectedRoles,
+        //"roles": this.selectedRoles,
+        "daily_limit": this.daily_limit,
+        "is_active": this.is_active,
         "dob":this.dob
       }
 
