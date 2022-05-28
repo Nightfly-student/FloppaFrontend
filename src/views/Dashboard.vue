@@ -59,7 +59,7 @@
                 >
               </li>
 
-              <li>
+              <li v-if="loggedInUser.roles.some(e => e.name === 'EMPLOYEE')">
                 <a
                   href="#"
                   class="nav-link px-0 align-middle"
@@ -183,6 +183,11 @@ export default {
       namePage: "Dashboard",
     };
   },
+  computed:{
+    loggedInUser(){
+      return this.$store.state.user;
+    }
+  }
 };
 </script>
 
