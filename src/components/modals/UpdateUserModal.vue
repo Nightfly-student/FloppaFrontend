@@ -171,7 +171,7 @@ export default {
       username: this.user.username,
       dob: this.user.dob,
       daily_limit: this.user.daily_limit,
-      //selectedRoles: this.user.selectedRoles,
+      selectedRoles: this.user.selectedRoles,
       is_active: this.user.is_active,
       holdUser: this.user.user,
     };
@@ -207,7 +207,7 @@ export default {
         "address":this.address,
         "postalcode":this.postalcode,
         "username":this.username,
-        //"roles": this.selectedRoles,
+        "roles": this.selectedRoles,
         "daily_limit": this.daily_limit,
         "is_active": this.is_active,
         "dob":this.dob

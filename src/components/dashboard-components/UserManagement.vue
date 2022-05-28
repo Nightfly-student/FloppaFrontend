@@ -36,7 +36,8 @@
           <td>{{ user.lastname }}</td>
           <td>{{ user.email }}</td>
           <td v-if="user.roles.length > 1">Employee</td>
-          <td v-else>User</td>
+          <td v-else-if="user.roles.length == 1">User</td>
+          <td v-else>No Roles</td>
           <td>{{ user.daily_limit }}</td>
           <td>{{ user.accountsCount }}</td>
           <td v-if="user.is_active"><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary">Active</button></td>
