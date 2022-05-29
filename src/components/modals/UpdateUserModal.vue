@@ -171,7 +171,7 @@ export default {
       username: this.user.username,
       dob: this.user.dob,
       daily_limit: this.user.daily_limit,
-      selectedRoles: this.user.selectedRoles,
+      selectedRoles: [],
       is_active: this.user.is_active,
       holdUser: this.user.user,
     };

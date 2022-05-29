@@ -68,7 +68,7 @@
           </li>
           <li class="page-item"><a class="page-link" href="#">1</a></li>
           <li class="page-item active">
-            <a class="page-link" href="#">2</a>
+            <a class="page-link" href="#" >2</a>
           </li>
           <li class="page-item"><a class="page-link" href="#">3</a></li>
           <li class="page-item">
@@ -94,16 +94,17 @@ export default {
     return {
       currentPage: 1,
       filter: "",
-      limit: 5
+      limit: 5,
+      offset: 0,
     };
   },
   methods: {
     loadUsers() {
-      var offset = this.$store.state.users.length;
+      var offset = this.offset;//this.$store.state.users.length;
       var limit = this.limit;
       var filter = this.filter;
       console.warn(`Filtering with limit ${limit}, offset ${offset}, filter ${filter}`)
-      this.$store.dispatch("loadUsers", { offset: 0, limit: limit, filter: filter });
+      this.$store.dispatch("loadUsers", { offset: offset, limit: limit, filter: filter });
     },
 
     changeActive(user) {
