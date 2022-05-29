@@ -62,18 +62,18 @@
       </button>
       <AddUserModal /> -->
       <nav aria-label="...">
-        <ul class="pagination">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <ul class="pagination" >
+          <li v-if="(offset - limit) < 0" class="page-item disabled"><button class="page-link">Previous</button></li>
+          <li v-else class="page-item"><button class="page-link" @click="changeOffset((-limit), usersCount, false, currentPage, false); loadUsers();">Previous</button></li>
+          <li v-if="currentPage > 1" class="page-item"><button class="page-link" @click="changeOffset(limit, usersCount, false, 1, true); loadUsers();">1</button></li>
+          <li v-if="currentPage > 1" class="page-item disabled"><a class="page-link">...</a></li>
           <li class="page-item active">
-            <a class="page-link" href="#">2</a>
+            <a class="page-link" >{{ currentPage }}</a>
           </li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
+          <li v-if="(offset + limit) < usersCount" class="page-item disabled"><a class="page-link">...</a></li>
+          <li v-if="(offset + limit) < usersCount" class="page-item"><button class="page-link" @click="changeOffset(limit, usersCount, true, (usersCount / limit), true); loadUsers();">{{ usersCount / limit }}</button></li>
+          <li v-if="(offset + limit) >= usersCount" class="page-item disabled"><button class="page-link" >Next</button></li>
+          <li v-else class="page-item"><button class="page-link" @click="changeOffset(limit, usersCount, true, currentPage, false); loadUsers();" >Next</button></li>
         </ul>
       </nav>
     </div>
@@ -123,6 +123,39 @@ export default {
               type: "error",
             });
           });
+    },
+    changeOffset(limit, count, goForward, pageNumber, shortCut){
+      if(shortCut != true) {
+        switch (goForward) {
+          case true:
+            if (this.offset < count && (this.offset + limit) >= 0) {
+              this.offset = this.offset + limit;
+              pageNumber++;
+            }
+            break;
+          case false:
+            if (this.offset >= count && (this.offset - limit) >= 0) {
+              this.offset = this.offset + limit;
+              pageNumber--;
+            } else if ((this.offset + limit) >= 0) {
+              this.offset = this.offset + limit;
+              pageNumber--;
+            }
+            break;
+        }
+        this.currentPage = pageNumber;
+      }if (shortCut != false){
+        switch (goForward) {
+          case true:
+            this.offset = count - limit;
+            this.currentPage = pageNumber;
+            break;
+          case false:
+            this.offset = 0;
+            this.currentPage = pageNumber;
+            break;
+        }
+      }
     },
   },
   watch:{
