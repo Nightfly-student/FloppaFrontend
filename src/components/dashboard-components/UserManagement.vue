@@ -3,7 +3,7 @@
     <div class="d-flex mb-2 justify-content-between">
       <div class="entries d-flex justify-content-between gap-2">
         <span>Showing</span>
-        <select name="" id="" v-model="limit">
+        <select name="" id="" v-model="limit" @change="offset=0; currentPage=1; filter='';">
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>
@@ -128,6 +128,8 @@ export default {
     },
 
     changeOffset(limit, count, goForward, pageNumber, shortCut){
+      limit = parseInt(limit);
+      this.limit = parseInt(this.limit);
       if(shortCut != true) {
         switch (goForward) {
           case true:
@@ -140,7 +142,7 @@ export default {
             if (this.offset >= count && (this.offset - limit) >= 0) {
               this.offset = this.offset + limit;
               pageNumber--;
-            } else if ((this.offset + limit) >= 0) {
+            } else {
               this.offset = this.offset + limit;
               pageNumber--;
             }

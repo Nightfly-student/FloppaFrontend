@@ -3,7 +3,7 @@
     <div class="d-flex mb-2 justify-content-between">
       <div class="entries d-flex justify-content-between gap-2">
         <span>Showing</span>
-        <select name="" id="" v-model="limit">
+        <select name="" id="" v-model="limit" @change="offset=0; currentPage=1; filter='';">
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>
@@ -54,26 +54,19 @@
       </tbody>
     </table>
     <div class="d-flex justify-content-between">
-      <!-- <button
-          :data-bs-target="'#CreateAccount'"
-          data-bs-toggle="modal"
-          class="btn btn-primary">
-        Add Account
-      </button>
-      <AddUserModal /> -->
       <nav aria-label="...">
         <ul class="pagination" >
           <li v-if="(offset - limit) < 0" class="page-item disabled"><button class="page-link">Previous</button></li>
-          <li v-else class="page-item"><button class="page-link" @click="changeOffset((-limit), usersCount, false, currentPage, false); loadUsers();">Previous</button></li>
-          <li v-if="currentPage > 1" class="page-item"><button class="page-link" @click="changeOffset(limit, usersCount, false, 1, true); loadUsers();">1</button></li>
+          <li v-else class="page-item"><button class="page-link" @click="changeOffset((-limit), accountsCount, false, currentPage, false); loadAccounts();">Previous</button></li>
+          <li v-if="currentPage > 1" class="page-item"><button class="page-link" @click="changeOffset(limit, accountsCount, false, 1, true); loadAccounts();">1</button></li>
           <li v-if="currentPage > 1" class="page-item disabled"><a class="page-link">...</a></li>
           <li class="page-item active">
             <a class="page-link" >{{ currentPage }}</a>
           </li>
-          <li v-if="(offset + limit) < usersCount" class="page-item disabled"><a class="page-link">...</a></li>
-          <li v-if="(offset + limit) < usersCount" class="page-item"><button class="page-link" @click="changeOffset(limit, usersCount, true, (usersCount / limit), true); loadUsers();">{{ usersCount / limit }}</button></li>
-          <li v-if="(offset + limit) >= usersCount" class="page-item disabled"><button class="page-link" >Next</button></li>
-          <li v-else class="page-item"><button class="page-link" @click="changeOffset(limit, usersCount, true, currentPage, false); loadUsers();" >Next</button></li>
+          <li v-if="(offset + limit) < accountsCount" class="page-item disabled"><a class="page-link">...</a></li>
+          <li v-if="(offset + limit) < accountsCount" class="page-item"><button class="page-link" @click="changeOffset(limit, accountsCount, true, (accountsCount / limit), true); loadAccounts();">{{ accountsCount / limit }}</button></li>
+          <li v-if="(offset + limit) >= accountsCount" class="page-item disabled"><button class="page-link" >Next</button></li>
+          <li v-else class="page-item"><button class="page-link" @click="changeOffset(limit, accountsCount, true, currentPage, false); loadAccounts();" >Next</button></li>
         </ul>
       </nav>
     </div>
@@ -95,6 +88,7 @@ export default {
       currentPage: 1,
       filter: "",
       limit: 5,
+      offset: 0,
     };
   },
   methods: {
@@ -125,6 +119,8 @@ export default {
           });
     },
     changeOffset(limit, count, goForward, pageNumber, shortCut){
+      limit = parseInt(limit);
+      this.limit = parseInt(this.limit);
       if(shortCut != true) {
         switch (goForward) {
           case true:
