@@ -61,8 +61,25 @@
         Add user
       </button>
       <AddUserModal />
+
       <nav aria-label="...">
-        <ul class="pagination">
+        <ul class="pagination" >
+          <li v-if="(offset - limit) < 0" class="page-item disabled"><button class="page-link"  @click="changeOffset((-limit), usersCount, false); loadUsers();">Previous</button></li>
+          <li v-else class="page-item"><button class="page-link" href="#" @click="changeOffset((-limit), usersCount, false); loadUsers();">Previous</button></li>
+          <li v-if="currentPage > 1" class="page-item"><a class="page-link">1</a></li>
+          <li v-if="currentPage > 1" class="page-item disabled"><a class="page-link">...</a></li>
+          <li class="page-item active">
+            <a class="page-link" >{{ currentPage }}</a>
+          </li>
+          <li v-if="(offset + limit) < usersCount" class="page-item disabled"><a class="page-link">...</a></li>
+          <li v-if="(offset + limit) < usersCount" class="page-item"><a class="page-link">{{ usersCount / limit }}</a></li>
+          <li v-if="(offset + limit) >= usersCount" class="page-item disabled"><button class="page-link"  @click="changeOffset(limit, usersCount, true); loadUsers();" >Next</button></li>
+          <li v-else class="page-item"><button class="page-link" href="#" @click="changeOffset(limit, usersCount, true); loadUsers();" >Next</button></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="...">
+        <ul class="pagination" >
           <li class="page-item disabled">
             <a class="page-link" href="#" tabindex="-1">Previous</a>
           </li>
@@ -72,7 +89,7 @@
           </li>
           <li class="page-item"><a class="page-link" href="#">3</a></li>
           <li class="page-item">
-            <a class="page-link" href="#">Next</a>
+            <a class="page-link" href="#" tabindex="+1">Next</a>
           </li>
         </ul>
       </nav>
@@ -124,6 +141,26 @@ export default {
               type: "error",
             });
           });
+    },
+
+    changeOffset(limit, count, goForward){
+        switch (goForward) {
+          case true:
+            if(this.offset < count && (this.offset + limit) >= 0) {
+              this.offset = this.offset + limit;
+              this.currentPage++;
+            }
+            break;
+          case false:
+            if(this.offset >= count && (this.offset - limit) >= 0) {
+              this.offset = this.offset + limit;
+              this.currentPage--;
+            }else if((this.offset + limit) >= 0){
+              this.offset = this.offset + limit;
+              this.currentPage--;
+            }
+            break;
+        }
     },
   },
   watch:{
