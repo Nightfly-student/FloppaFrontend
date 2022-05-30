@@ -1,5 +1,5 @@
 <template>
-  <div class="modal text-dark fade" id="CreateAccount">
+  <div class="modal text-dark fade" id="CreateUser">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">

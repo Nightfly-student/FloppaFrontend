@@ -55,20 +55,25 @@
           <td>{{ user.accounts.length }}</td>
           <td v-if="user.is_active"><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary">Active</button></td>
           <td v-else><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary deactive">Not Active</button></td>
-          <td><button
+          <td class="d-flex gap-2"><button
               :data-bs-target="'#SS' + user.id"
               data-bs-toggle="modal"
               class="btn btn-primary">
               Edit
               </button>
               <UpdateUserModal :user="user"/>
+
+              <button :data-bs-target="'#CreateAccount'" data-bs-toggle="modal" class="btn btn-primary">
+                Create Account
+              </button>
+              <AddAccountModal @createdAccount="newAccount" />
           </td>
         </tr>
       </tbody>
     </table>
     <div class="d-flex justify-content-between">
       <button 
-        :data-bs-target="'#CreateAccount'"
+        :data-bs-target="'#CreateUser'"
         data-bs-toggle="modal"
         class="btn btn-primary">
         Add user
@@ -97,13 +102,14 @@
 <script>
 import AddUserModal from "../modals/AddUserModal.vue";
 import UpdateUserModal from "../modals/UpdateUserModal.vue";
+import AddAccountModal from "../modals/AddAccountModal.vue";
 export default {
   name: "UserManagement",
-  components: { 
+  components: {
     AddUserModal,
-    UpdateUserModal
-    
-    },
+    UpdateUserModal,
+    AddAccountModal
+},
   data() {
     return {
       currentPage: 1,
@@ -112,9 +118,6 @@ export default {
       limit: 5,
       offset: 0,
     };
-  },
-  mounted(){
-    this.$store.dispatch("loadRoles", {limit: 5, offset: 0})
   },
   methods: {
     loadUsers() {
@@ -196,6 +199,7 @@ export default {
   },  
   mounted() {
     this.$store.dispatch("loadUsers", { offset: 0, limit: 5 });
+    this.$store.dispatch("loadRoles", { offset: 0, limit: 5 });
   },
   computed: {
     users() {

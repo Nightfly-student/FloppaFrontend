@@ -45,6 +45,9 @@ import axios from "axios";
 import { authHeader } from "../../helpers/authHeader";
 export default {
   name: "AddAccountModal",
+  props:{
+    userId: null
+  },
   data() {
     return {
       value: "",
