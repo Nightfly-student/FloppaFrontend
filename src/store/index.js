@@ -253,6 +253,7 @@ const store = createStore({
 
 
     loadRoles({commit}, {limit, offset}){
+      console.warn("loading roles")
       axios.get(`/api/v1/roles?limit=${limit}&offset=${offset}`)
       .then((response) =>{
         console.warn("Loaded roles" + response.data.roles)

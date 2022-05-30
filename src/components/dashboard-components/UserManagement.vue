@@ -113,6 +113,9 @@ export default {
       offset: 0,
     };
   },
+  mounted(){
+    this.$store.dispatch("loadRoles", {limit: 5, offset: 0})
+  },
   methods: {
     loadUsers() {
       var offset = this.offset;//this.$store.state.users.length;

@@ -158,9 +158,6 @@ export default {
       selectedRoles: [],
     };
   },
-  mounted(){
-    this.$store.dispatch("loadRoles", {limit: 5, offset: 0})
-  },
   computed:{
     loadedRoles(){
       var loadedRoles = this.$store.state.roles;

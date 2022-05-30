@@ -176,9 +176,6 @@ export default {
       holdUser: this.user.user,
     };
   },
-  mounted(){
-    this.$store.dispatch("loadRoles", {limit: 5, offset: 0})
-  },
   computed:{
     loadedRoles(){
       var loadedRoles = this.$store.state.roles;
