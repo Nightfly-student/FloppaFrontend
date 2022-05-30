@@ -68,7 +68,6 @@ export default {
           this.value = this.account.balance - value;
           value && (this.holdAccount.balance = this.value);
           this.$notify({
-            //text: res.data,
             text: "Withdrawal succesful",
             type: "success",
           });

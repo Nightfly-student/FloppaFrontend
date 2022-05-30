@@ -4,23 +4,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Send Money</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p>Available Balance: &euro; {{ account.balance.toFixed(2) }}</p>
           <hr />
           <p>Search For Account</p>
-          <input
-            type="text"
-            v-model="q"
-            @change="onChange()"
-            placeholder="Iban"
-          />
+          <input type="text" v-model="q" @change="onChange()" placeholder="Iban" />
           <button class="btn-secondary" @click="onChange()">Search</button>
           <div v-if="accounts.length != 0">
             <p class="mt-2">Found Iban Accounts</p>
@@ -33,11 +23,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    v-for="acc in accounts"
-                    :key="acc.iban"
-                    @click="onClick(acc.iban)"
-                  >
+                  <tr v-for="acc in accounts" :key="acc.iban" @click="onClick(acc.iban)">
                     <th scope="row">{{ acc.iban }}</th>
                     <td>{{ acc.accountType }}</td>
                   </tr>
@@ -55,12 +41,7 @@
           <p class="text-danger">{{ errorMsg }}</p>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            id="closeSend"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
+          <button type="button" id="closeSend" class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
           <button type="button" @click="sendMoney" class="btn btn-primary">
@@ -106,8 +87,7 @@ export default {
       this.selected = false;
       axios
         .get(
-          `/api/v1/accounts/?limit=${this.limit}&offset=${
-            this.offset
+          `/api/v1/accounts/?limit=${this.limit}&offset=${this.offset
           }&q=${this.q.toUpperCase()}`
         )
         .then((res) => {
