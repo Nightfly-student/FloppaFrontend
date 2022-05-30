@@ -127,8 +127,9 @@ export default {
           this.$emit("updateAccount", this.holdAccount);
         })
         .catch((err) => {
+          console.log(err);
           this.$notify({
-            text: err.response.error,
+            text: err.response.data.error_message,
             type: "error",
           });
         });

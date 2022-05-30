@@ -4,7 +4,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Withdraw</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <p>Available Balance: &euro; {{ account.balance.toFixed(2) }}</p>
@@ -12,7 +17,12 @@
           <p class="text-danger">{{ errorMsg }}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" id="closeWithdraw" class="btn btn-secondary" data-bs-dismiss="modal">
+          <button
+            type="button"
+            id="closeWithdraw"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
             Close
           </button>
           <button type="button" @click="withdrawMoney" class="btn btn-primary">
@@ -62,8 +72,9 @@ export default {
             text: "Withdrawal succesful",
             type: "success",
           });
-          document.getElementById('closeWithdraw').click();
+          document.getElementById("closeWithdraw").click();
           this.value = 1;
+          this.$emit("updateAccount", this.holdAccount);
         })
         .catch((err) => {
           console.log(err);
@@ -75,5 +86,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

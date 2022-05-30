@@ -1,10 +1,21 @@
 <template>
   <div class="container-xl text-light">
     <p>Hi {{ username }}!</p>
+    <div class="card shadow my-2">
+      <div class="p-2">
+        <h2 v-if="accountsBalance >= 0">
+          Total: &euro; {{ accountsBalance.toFixed(2) }}
+        </h2>
+        <h2 v-else class="text-danger">
+          &euro; {{ accountsBalance.toFixed(2) }}
+        </h2>
+      </div>
+    </div>
     <div v-if="selected">
       <SelectedAccount
         v-if="mounted"
-        :account="selectedAccount" :accounts="accounts"
+        :account="selectedAccount"
+        :accounts="accounts"
         @updateAccount="updatedAccount"
       />
     </div>
@@ -50,6 +61,7 @@ export default {
   data() {
     return {
       accounts: [],
+      accountsBalance: 0,
       mounted: false,
       selected: false,
       selectedAccount: {},
@@ -61,8 +73,8 @@ export default {
         .get(`/api/v1/users/${getUserId()}/accounts`, { headers: authHeader() })
         .then((res) => {
           this.accounts = res.data;
+          this.calculateTotal();
           this.mounted = true;
-          console.log(res.data);
         });
     },
     userName() {
@@ -79,17 +91,24 @@ export default {
           this.selectedAccount = account;
         }
       }
-      console.log(account);
     },
     newAccount(account) {
       this.accounts.push(account);
       this.mounted = true;
     },
     updatedAccount(account) {
+      console.log(account);
       this.accounts.forEach((acc) => {
         if (acc.iban === account.iban) {
           acc = account;
+          this.calculateTotal();
         }
+      });
+    },
+    calculateTotal() {
+      this.accountsBalance = 0;
+      this.accounts.forEach((acc) => {
+        this.accountsBalance += acc.balance;
       });
     },
   },
@@ -104,4 +123,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.card {
+  background: rgb(36, 36, 36) !important;
+}
+</style>
