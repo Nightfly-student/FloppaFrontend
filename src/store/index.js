@@ -125,10 +125,11 @@ const store = createStore({
       commit("logout");
     },
 
-    loadUsers({commit}, {limit, offset, filter}){
+    loadUsers({commit}, {limit, offset, filter, noAccountsOnly}){
       var url = `/api/v1/users?limit=${limit}&offset=${offset}`;
 
-      if(filter != undefined)url += `&filter=${filter}`; this.state.filtered = true;
+      if(filter != undefined)url += `&name=${filter}`; this.state.filtered = true;
+      if(noAccountsOnly) url += '&noAccount=true'
 
       axios.get(url)
         .then((response) =>{

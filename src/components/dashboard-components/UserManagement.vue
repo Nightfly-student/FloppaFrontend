@@ -12,9 +12,23 @@
         </select>
         <span>Users of {{usersCount}}</span>
       </div>
-      <div class="search d-flex gap-2">
-        <Label>Search by</Label>
-        <input type="" id="" name="" v-model="filter"/>
+      
+      <div class="search d-flex gap-5">
+
+        <div class="div d-flex">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="noAccountsOnly">
+            <label class="form-check-label" for="flexCheckDefault">
+              No account filter
+            </label>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <Label>Search by</Label>
+          <input type="" id="" name="" v-model="filter"/>
+        </div>
+
       </div>
     </div>
     <table class="table table-striped table-dark">
@@ -39,7 +53,7 @@
           <td v-else-if="user.roles.length == 1">User</td>
           <td v-else>No Roles</td>
           <td>{{ user.daily_limit }}</td>
-          <td>{{ user.accountsCount }}</td>
+          <td>{{ user.accounts.length }}</td>
           <td v-if="user.is_active"><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary">Active</button></td>
           <td v-else><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary deactive">Not Active</button></td>
           <td><button
@@ -95,6 +109,7 @@ export default {
     return {
       currentPage: 1,
       filter: "",
+      noAccountsOnly: false,
       limit: 5,
       offset: 0,
     };
@@ -104,8 +119,9 @@ export default {
       var offset = this.offset;//this.$store.state.users.length;
       var limit = this.limit;
       var filter = this.filter;
+      var NoAccountsOnly = this.noAccountsOnly;
       console.warn(`Filtering with limit ${limit}, offset ${offset}, filter ${filter}`)
-      this.$store.dispatch("loadUsers", { offset: offset, limit: limit, filter: filter });
+      this.$store.dispatch("loadUsers", { offset: offset, limit: limit, filter: filter, noAccountsOnly: NoAccountsOnly });
     },
 
     changeActive(user) {
@@ -164,6 +180,9 @@ export default {
     },
   },
   watch:{
+    noAccountsOnly(){
+      this.loadUsers();
+    },
     filter(){ 
       this.loadUsers();
     },
