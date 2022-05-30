@@ -24,11 +24,10 @@
           </div>
         </div>
 
-        <div class="d-flex gap-2">
+        <div class="search d-flex gap-2">
           <Label>Search by</Label>
-          <input type="" id="" name="" v-model="filter"/>
+          <input type="" id="" name="" v-model="filter" @change="offset=0; currentPage=1; loadUsers();"/>
         </div>
-
       </div>
     </div>
     <table class="table table-striped table-dark">
@@ -185,6 +184,8 @@ export default {
     },
     filter(){ 
       this.loadUsers();
+      this.offset = 0;
+      this.currentPage = 1;
     },
     limit(){
       this.loadUsers();

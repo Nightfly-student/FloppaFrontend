@@ -7,19 +7,19 @@
       <button :data-bs-target="'#W' + account.iban" data-bs-toggle="modal" class="btn btn-primary m-3 fs-4">
         Withdraw
       </button>
-      <WithdrawModal :account="account" />
+      <WithdrawModal :account="account" @updateAccount="updatedAccount"/>
 
       <button :data-bs-target="'#S' + account.iban" data-bs-toggle="modal" class="btn btn-primary m-3 fs-4">
         Send Money
       </button>
-      <SendModal :account="account" :accountArray="accounts" />
+      <SendModal :account="account" :accountArray="accounts" @updateAccount="updatedAccount"/>
 
       <!--<button class="btn btn-primary m-3 fs-4">Deposit</button>-->
 
       <button :data-bs-target="'#D' + account.iban" data-bs-toggle="modal" class="btn btn-primary m-3 fs-4">
         Deposit
       </button>
-      <DepositModal :account="account" />
+      <DepositModal :account="account" @updateAccount="updatedAccount"/>
       <button :data-bs-target="'#SS' + account.iban" data-bs-toggle="modal" class="btn btn-primary m-3 fs-4">
         Settings
       </button>
@@ -54,8 +54,7 @@ export default {
   },
   methods: {
     updatedAccount(account) {
-      this.account = account;
-      this.$emit("updateAccount", this.account);
+      this.$emit("updateAccount", account);
     },
   },
 };

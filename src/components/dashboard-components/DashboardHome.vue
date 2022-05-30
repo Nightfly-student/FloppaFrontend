@@ -1,32 +1,36 @@
 <template>
   <div class="container-xl text-light">
-    <p>Hi {{ username }}!</p>
+    <p>Hi {{ username }}!
+    <button v-if="user.roles.some(e => e.name === 'EMPLOYEE')" :data-bs-target="'#EmployeeSendModal'" data-bs-toggle="modal" class="btn btn-primary mx-5">
+        Perform transaction
+      </button>
+      <EmployeeSendModal :user="user" :accountArray="accounts" />
+    </p>
+    <div class="card shadow my-2">
+      <div class="p-2">
+        <h2 v-if="accountsBalance >= 0">
+          Total: &euro; {{ accountsBalance.toFixed(2) }}
+        </h2>
+        <h2 v-else class="text-danger">
+          &euro; {{ accountsBalance.toFixed(2) }}
+        </h2>
+      </div>
+    </div>
     <div v-if="selected">
       <SelectedAccount
         v-if="mounted"
-        :account="selectedAccount" :accounts="accounts"
+        :account="selectedAccount"
+        :accounts="accounts"
         @updateAccount="updatedAccount"
       />
     </div>
     <div class="row gy-4">
-      <div
-        class="col-12 col-sm-12 col-md-6"
-        v-for="account in accounts"
-        :key="account.id"
-      >
-        <AccountDashboard
-          v-if="mounted"
-          @selectedAccount="getSelectedAccount"
-          :account="account"
-        />
+      <div class="col-12 col-sm-12 col-md-6" v-for="account in accounts" :key="account.id">
+        <AccountDashboard v-if="mounted" @selectedAccount="getSelectedAccount" :account="account" />
       </div>
     </div>
     <div class="text-center mt-4">
-      <button
-        :data-bs-target="'#CreateAccount'"
-        data-bs-toggle="modal"
-        class="btn btn-primary"
-      >
+      <button :data-bs-target="'#CreateAccount'" data-bs-toggle="modal" class="btn btn-primary">
         Create New Bank Account
       </button>
       <AddAccountModal @createdAccount="newAccount" />
@@ -39,6 +43,7 @@ import axios from "axios";
 import { authHeader, getUserId, getUserName } from "../../helpers/authHeader";
 import AccountDashboard from "./account-components/AccountDashboard.vue";
 import SelectedAccount from "./account-components/SelectedAccount.vue";
+import EmployeeSendModal from "../modals/EmployeeSendModal.vue";
 import AddAccountModal from "../modals/AddAccountModal.vue";
 export default {
   name: "DashboardHome",
@@ -46,10 +51,12 @@ export default {
     AccountDashboard,
     SelectedAccount,
     AddAccountModal,
+    EmployeeSendModal,
   },
   data() {
     return {
       accounts: [],
+      accountsBalance: 0,
       mounted: false,
       selected: false,
       selectedAccount: {},
@@ -61,8 +68,8 @@ export default {
         .get(`/api/v1/users/${getUserId()}/accounts`, { headers: authHeader() })
         .then((res) => {
           this.accounts = res.data;
+          this.calculateTotal();
           this.mounted = true;
-          console.log(res.data);
         });
     },
     userName() {
@@ -79,21 +86,31 @@ export default {
           this.selectedAccount = account;
         }
       }
-      console.log(account);
     },
     newAccount(account) {
       this.accounts.push(account);
       this.mounted = true;
     },
     updatedAccount(account) {
+      console.log(account);
       this.accounts.forEach((acc) => {
         if (acc.iban === account.iban) {
           acc = account;
+          this.calculateTotal();
         }
+      });
+    },
+    calculateTotal() {
+      this.accountsBalance = 0;
+      this.accounts.forEach((acc) => {
+        this.accountsBalance += acc.balance;
       });
     },
   },
   computed: {
+    user() {
+      return this.$store.state.user;
+    },
     username() {
       return this.$store.state.user.username;
     },
@@ -104,4 +121,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.card {
+  background: rgb(36, 36, 36) !important;
+}
+</style>
