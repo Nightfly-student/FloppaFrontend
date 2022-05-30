@@ -14,7 +14,7 @@
       </div>
       <div class="search d-flex gap-2">
         <Label>Search by</Label>
-        <input type="" id="" name="" v-model="filter"/>
+        <input type="" id="" name="" v-model="filter" @change="offset=0; currentPage=1; loadAccounts();"/>
       </div>
     </div>
     <table class="table table-striped table-dark">
@@ -157,6 +157,8 @@ export default {
   watch:{
     filter(){
       this.loadAccounts();
+      this.offset = 0;
+      this.currentPage = 1;
     },
     limit(){
       this.loadAccounts();
