@@ -106,6 +106,7 @@
               </button>
 
               <button
+                v-if="user.is_active"
                 :data-bs-target="'#EC' + user.id"
                 data-bs-toggle="modal"
                 class="dropdown-item">
