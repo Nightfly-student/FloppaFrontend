@@ -64,7 +64,7 @@
             <a class="page-link" >{{ currentPage }}</a>
           </li>
           <li v-if="(offset + limit) < accountsCount" class="page-item disabled"><a class="page-link">...</a></li>
-          <li v-if="(offset + limit) < accountsCount" class="page-item"><button class="page-link" @click="changeOffset(limit, accountsCount, true, (accountsCount / limit), true); loadAccounts();">{{ accountsCount / limit }}</button></li>
+          <li v-if="(offset + limit) < accountsCount" class="page-item"><button class="page-link" @click="changeOffset(limit, accountsCount, true, (accountsCount / limit), true); loadAccounts();">{{ Math.ceil(accountsCount / limit) }}</button></li>
           <li v-if="(offset + limit) >= accountsCount" class="page-item disabled"><button class="page-link" >Next</button></li>
           <li v-else class="page-item"><button class="page-link" @click="changeOffset(limit, accountsCount, true, currentPage, false); loadAccounts();" >Next</button></li>
         </ul>
@@ -93,11 +93,11 @@ export default {
   },
   methods: {
     loadAccounts() {
-      var offset = this.$store.state.accounts.length;
+      var offset = this.offset;//this.$store.state.accounts.length;
       var limit = this.limit;
       var filter = this.filter;
       console.warn(`Filtering with limit ${limit}, offset ${offset}, filter ${filter}`)
-      this.$store.dispatch("loadAccounts", { offset: 0, limit: limit, filter: filter });
+      this.$store.dispatch("loadAccounts", { offset: offset, limit: limit, filter: filter });
     },
 
     changeStatus(account) {

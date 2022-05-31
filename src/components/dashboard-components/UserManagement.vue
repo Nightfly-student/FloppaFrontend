@@ -185,7 +185,7 @@
                 loadUsers();
               "
             >
-              {{ usersCount / limit }}
+              {{ Math.ceil(usersCount / limit) }}
             </button>
           </li>
           <li v-if="offset + limit >= usersCount" class="page-item disabled">
