@@ -128,7 +128,7 @@
               changeOffset(limit, transactionsCount, true, transactionsCount / limit, true);
               loadTransactions();
             ">
-              {{ transactionsCount / limit }}
+              {{ Math.ceil(transactionsCount / limit) }}
             </button>
           </li>
           <li v-if="offset + limit >= transactionsCount" class="page-item disabled">
