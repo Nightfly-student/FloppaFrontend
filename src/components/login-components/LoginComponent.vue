@@ -86,7 +86,7 @@ export default {
         })
         .catch((err) => {
           this.$notify({
-            text: err.response.data.message,
+            text: err,
             type: "error",
           });
         });

@@ -116,7 +116,7 @@ const store = createStore({
               });
           })
           .catch((error) => {
-            reject(error);
+            reject(error.response.data);
           });
       });
     },
