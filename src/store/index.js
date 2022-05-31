@@ -156,8 +156,11 @@ const store = createStore({
           })
     },
 
-    loadTransactions({commit}, {limit, offset}){
-      axios.get(`/api/v1/transactions?limit=${limit}&offset=${offset}&userId=${getUserId()}`)
+    loadTransactions({commit}, {limit, offset, filter}){
+      var url = `/api/v1/transactions?limit=${limit}&offset=${offset}&userId=${getUserId()}`;
+
+      if(filter != undefined)url += `&filter=${filter}`; this.state.filtered = true;
+      axios.get(url)
         .then((response) =>{
           console.warn(response.data)
           commit("transactionLoaded",response.data)
