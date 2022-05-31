@@ -168,7 +168,6 @@ const store = createStore({
     },
 
     registerUser({commit}, user){
-
       return new Promise((resolve, reject) => {
         axios.post('/api/v1/users/', user, {headers: authHeader()})
         .then((response) => {
@@ -179,7 +178,19 @@ const store = createStore({
           reject(err.response.data)
         })
       })
-      
+    },
+
+    registerUserAccount({commit}, data){
+      return new Promise((resolve, reject) => {
+        axios.post('/api/v1/employee/createAccount', data, {headers: authHeader()})
+        .then((response) => {
+          console.warn(response.data)
+          resolve(response.data)
+        })
+        .catch((err) => {
+          reject(err.response.data)
+        })
+      })
     },
 
     deactivateUser({commit}){

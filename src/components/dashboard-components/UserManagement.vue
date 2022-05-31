@@ -3,21 +3,35 @@
     <div class="d-flex mb-2 justify-content-between">
       <div class="entries d-flex justify-content-between gap-2">
         <span>Showing</span>
-        <select name="" id="" v-model="limit" @change="offset=0; currentPage=1; filter='';">
+        <select
+          name=""
+          id=""
+          v-model="limit"
+          @change="
+            offset = 0;
+            currentPage = 1;
+            filter = '';
+          "
+        >
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>
           <option value="20">20</option>
           <option value="25">25</option>
         </select>
-        <span>Users of {{usersCount}}</span>
+        <span>Users of {{ usersCount }}</span>
       </div>
-      
-      <div class="search d-flex gap-5">
 
+      <div class="search d-flex gap-5">
         <div class="div d-flex">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="noAccountsOnly">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+              v-model="noAccountsOnly"
+            />
             <label class="form-check-label" for="flexCheckDefault">
               No account filter
             </label>
@@ -26,7 +40,17 @@
 
         <div class="search d-flex gap-2">
           <Label>Search by</Label>
-          <input type="" id="" name="" v-model="filter" @change="offset=0; currentPage=1; loadUsers();"/>
+          <input
+            type=""
+            id=""
+            name=""
+            v-model="filter"
+            @change="
+              offset = 0;
+              currentPage = 1;
+              loadUsers();
+            "
+          />
         </div>
       </div>
     </div>
@@ -53,46 +77,130 @@
           <td v-else>No Roles</td>
           <td>{{ user.daily_limit }}</td>
           <td>{{ user.accounts.length }}</td>
-          <td v-if="user.is_active"><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary">Active</button></td>
-          <td v-else><button type="button" data-bs-dismiss="modal" @click="changeActive(user)" class="btn btn-primary deactive">Not Active</button></td>
-          <td class="d-flex gap-2"><button
-              :data-bs-target="'#SS' + user.id"
-              data-bs-toggle="modal"
-              class="btn btn-primary">
-              Edit
-              </button>
-              <UpdateUserModal :user="user"/>
+          <td>
+            <span v-if="user.is_active">Active</span>
+            <span v-else>Inactive</span>
+          </td>
 
-              <button :data-bs-target="'#CreateAccount'" data-bs-toggle="modal" class="btn btn-primary">
-                Create Account
+          <td>
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Actions
               </button>
-              <AddAccountModal @createdAccount="newAccount" />
+              <div class="dropdown-menu">
+
+              <button v-if="user.is_active"
+                type="button"
+                data-bs-dismiss="modal"
+                @click="changeActive(user)"
+                class="dropdown-item">
+                Set Inactive
+              </button>
+              <button v-else
+                type="button"
+                data-bs-dismiss="modal"
+                @click="changeActive(user)"
+                class="dropdown-item"
+              >
+              Set Active
+              </button>
+
+              <button
+                :data-bs-target="'#EC' + user.id"
+                data-bs-toggle="modal"
+                class="dropdown-item">
+                Create account
+              </button>
+
+              <button
+                :data-bs-target="'#SS' + user.id"
+                data-bs-toggle="modal"
+                class="dropdown-item">
+                Edit User
+              </button>
+
+              </div>
+            </div>
+
+          <!-- MODALS -->
+          <UpdateUserModal :user="user"/>
+          <AddAccountAsEmployee :user="user" />
+
           </td>
         </tr>
       </tbody>
     </table>
     <div class="d-flex justify-content-between">
-      <button 
+      <button
         :data-bs-target="'#CreateUser'"
         data-bs-toggle="modal"
-        class="btn btn-primary">
+        class="btn btn-primary"
+      >
         Add user
       </button>
       <AddUserModal />
 
       <nav aria-label="...">
-        <ul class="pagination" >
-          <li v-if="(offset - limit) < 0" class="page-item disabled"><button class="page-link">Previous</button></li>
-          <li v-else class="page-item"><button class="page-link" @click="changeOffset((-limit), usersCount, false, currentPage, false); loadUsers();">Previous</button></li>
-          <li v-if="currentPage > 1" class="page-item"><button class="page-link" @click="changeOffset(limit, usersCount, false, 1, true); loadUsers();">1</button></li>
-          <li v-if="currentPage > 1" class="page-item disabled"><a class="page-link">...</a></li>
-          <li class="page-item active">
-            <a class="page-link" >{{ currentPage }}</a>
+        <ul class="pagination">
+          <li v-if="offset - limit < 0" class="page-item disabled">
+            <button class="page-link">Previous</button>
           </li>
-          <li v-if="(offset + limit) < usersCount" class="page-item disabled"><a class="page-link">...</a></li>
-          <li v-if="(offset + limit) < usersCount" class="page-item"><button class="page-link" @click="changeOffset(limit, usersCount, true, (usersCount / limit), true); loadUsers();">{{ usersCount / limit }}</button></li>
-          <li v-if="(offset + limit) >= usersCount" class="page-item disabled"><button class="page-link" >Next</button></li>
-          <li v-else class="page-item"><button class="page-link" @click="changeOffset(limit, usersCount, true, currentPage, false); loadUsers();" >Next</button></li>
+          <li v-else class="page-item">
+            <button
+              class="page-link"
+              @click="
+                changeOffset(-limit, usersCount, false, currentPage, false);
+                loadUsers();
+              "
+            >
+              Previous
+            </button>
+          </li>
+          <li v-if="currentPage > 1" class="page-item">
+            <button
+              class="page-link"
+              @click="
+                changeOffset(limit, usersCount, false, 1, true);
+                loadUsers();
+              "
+            >
+              1
+            </button>
+          </li>
+          <li v-if="currentPage > 1" class="page-item disabled">
+            <a class="page-link">...</a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link">{{ currentPage }}</a>
+          </li>
+          <li v-if="offset + limit < usersCount" class="page-item disabled">
+            <a class="page-link">...</a>
+          </li>
+          <li v-if="offset + limit < usersCount" class="page-item">
+            <button
+              class="page-link"
+              @click="
+                changeOffset(limit, usersCount, true, usersCount / limit, true);
+                loadUsers();
+              "
+            >
+              {{ usersCount / limit }}
+            </button>
+          </li>
+          <li v-if="offset + limit >= usersCount" class="page-item disabled">
+            <button class="page-link">Next</button>
+          </li>
+          <li v-else class="page-item">
+            <button
+              class="page-link"
+              @click="
+                changeOffset(limit, usersCount, true, currentPage, false);
+                loadUsers();
+              "
+            >
+              Next
+            </button>
+          </li>
         </ul>
       </nav>
     </div>
@@ -103,12 +211,14 @@
 import AddUserModal from "../modals/AddUserModal.vue";
 import UpdateUserModal from "../modals/UpdateUserModal.vue";
 import AddAccountModal from "../modals/AddAccountModal.vue";
+import AddAccountAsEmployee from "../modals/AddAccountAsEmployee.vue";
 export default {
   name: "UserManagement",
   components: {
     AddUserModal,
     UpdateUserModal,
-    AddAccountModal
+    AddAccountModal,
+    AddAccountAsEmployee,
 },
   data() {
     return {
@@ -121,46 +231,55 @@ export default {
   },
   methods: {
     loadUsers() {
-      var offset = this.offset;//this.$store.state.users.length;
+      var offset = this.offset; //this.$store.state.users.length;
       var limit = this.limit;
       var filter = this.filter;
       var NoAccountsOnly = this.noAccountsOnly;
-      console.warn(`Filtering with limit ${limit}, offset ${offset}, filter ${filter}`)
-      this.$store.dispatch("loadUsers", { offset: offset, limit: limit, filter: filter, noAccountsOnly: NoAccountsOnly });
+      console.warn(
+        `Filtering with limit ${limit}, offset ${offset}, filter ${filter}`
+      );
+      this.$store.dispatch("loadUsers", {
+        offset: offset,
+        limit: limit,
+        filter: filter,
+        noAccountsOnly: NoAccountsOnly,
+      });
     },
 
     changeActive(user) {
       var fr = user.is_active ? false : true;
       fr != null && (user.is_active = fr);
-      this.$store.dispatch("updateUserAccountAsEmployee", user)
-          .then(() => {
-            fr != null && (user.is_active = fr);
-            this.$notify({
-              text: "Updated User Status to Active / Not Active: " + user.is_active,
-              type: "success",
-            });
-          })
-          .catch((err) => {
-            this.$notify({
-              text: err.response.data,
-              type: "error",
-            });
+      this.$store
+        .dispatch("updateUserAccountAsEmployee", user)
+        .then(() => {
+          fr != null && (user.is_active = fr);
+          this.$notify({
+            text:
+              "Updated User Status to Active / Not Active: " + user.is_active,
+            type: "success",
           });
+        })
+        .catch((err) => {
+          this.$notify({
+            text: err.response.data,
+            type: "error",
+          });
+        });
     },
 
-    changeOffset(limit, count, goForward, pageNumber, shortCut){
+    changeOffset(limit, count, goForward, pageNumber, shortCut) {
       limit = parseInt(limit);
       this.limit = parseInt(this.limit);
-      if(shortCut != true) {
+      if (shortCut != true) {
         switch (goForward) {
           case true:
-            if (this.offset < count && (this.offset + limit) >= 0) {
+            if (this.offset < count && this.offset + limit >= 0) {
               this.offset = this.offset + limit;
               pageNumber++;
             }
             break;
           case false:
-            if (this.offset >= count && (this.offset - limit) >= 0) {
+            if (this.offset >= count && this.offset - limit >= 0) {
               this.offset = this.offset + limit;
               pageNumber--;
             } else {
@@ -170,33 +289,34 @@ export default {
             break;
         }
         this.currentPage = pageNumber;
-      }if (shortCut != false){
+      }
+      if (shortCut != false) {
         switch (goForward) {
           case true:
-              this.offset = count - limit;
-              this.currentPage = pageNumber;
+            this.offset = count - limit;
+            this.currentPage = pageNumber;
             break;
           case false:
-              this.offset = 0;
-              this.currentPage = pageNumber;
+            this.offset = 0;
+            this.currentPage = pageNumber;
             break;
         }
       }
     },
   },
-  watch:{
-    noAccountsOnly(){
+  watch: {
+    noAccountsOnly() {
       this.loadUsers();
     },
-    filter(){ 
+    filter() {
       this.loadUsers();
       this.offset = 0;
       this.currentPage = 1;
     },
-    limit(){
+    limit() {
       this.loadUsers();
-    }
-  },  
+    },
+  },
   mounted() {
     this.$store.dispatch("loadUsers", { offset: 0, limit: 5 });
     this.$store.dispatch("loadRoles", { offset: 0, limit: 5 });
@@ -205,9 +325,9 @@ export default {
     users() {
       return this.$store.state.users;
     },
-    usersCount(){
+    usersCount() {
       return this.$store.state.totalUsersCount;
-    }
+    },
   },
 };
 </script>
