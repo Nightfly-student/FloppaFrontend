@@ -88,6 +88,9 @@ const store = createStore({
     },
     updatePageParam(state, payload){
       state.homeSelectedPage = payload
+    },
+    addNewRegisteredUser(state, payload){
+      state.users.push(payload)
     }
   },
   actions: {
@@ -175,6 +178,7 @@ const store = createStore({
         axios.post('/api/v1/employee/registerUser', user, {headers: authHeader()})
         .then((response) => {
           console.warn(response.data)
+          commit("addNewRegisteredUser", response.data)
           resolve(response.data)
         })
         .catch((err) => {

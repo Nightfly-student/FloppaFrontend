@@ -49,6 +49,19 @@
                 />
               </div>
             </div>
+
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="username"
+                  placeholder="Enter username"
+                />
+              </div>
+            </div>
+
           </div>
           <div class="row mt-2">
             <div class="col">
@@ -77,17 +90,6 @@
           <div class="row mt-2">
             <div class="col">
               <div class="form-group">
-                <label for="exampleInputEmail1">Username</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="username"
-                  placeholder="Enter username"
-                />
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-group">
                 <label for="exampleInputEmail1">Date of birth</label>
                 <input
                   type="date"
@@ -97,8 +99,19 @@
                 />
               </div>
             </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Daily limit</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="dailyLimit"
+                  placeholder="Enter a daily limit"
+                  min="0" max="5000"
+                />
+              </div>
+            </div>
           </div>
-
           <div class="row mt-2">
             <div class="col">
               <label>Roles</label>
@@ -156,6 +169,8 @@ export default {
       username: "sjonny55",
       dob: "1990-01-01",
       selectedRoles: [],
+      dbRoles:[],
+      dailyLimit: 1000
     };
   },
   computed:{
@@ -167,18 +182,21 @@ export default {
       if(loadedRoles != null){
         loadedRoles.map((role) => {
           var roleItem = {label: role.name, value: role}
-
-          if(roleItem.label === "USER" && this.selectedRoles.length == 0){
-            this.selectedRoles.push(role)
-          }
-
           roles.push(roleItem)
         })
       }
-
-
+      this.dbRoles = roles
       return roles
-
+    }
+  },
+  watch: {
+    dbRoles: {
+      handler(newValue, oldValue) {
+        if (this.dbRoles.length >= 1) {
+          this.selectedRoles[0] = this.dbRoles[0]
+        }
+      },
+      deep: true
     }
   },
   methods: {
@@ -191,15 +209,13 @@ export default {
         postalcode: this.postalcode, 
         username: this.username, 
         dob: this.dob,
+        dailyLimit: this.dailyLimit,
         roles: this.selectedRoles
       }
 
       this.$store.dispatch("registerAsEmployeeUser", user)
       .then((newUser) => {
-
         document.getElementById('closer').click();
-
-
         this.$notify({
           text: "Registered new user successfully",
           type: "success",
