@@ -43,6 +43,7 @@
         <div class="modal-footer">
           <button
             type="button"
+            id="closeUpdate"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
           >
@@ -50,7 +51,6 @@
           </button>
           <button
             type="button"
-            data-bs-dismiss="modal"
             @click="onUpdate"
             class="btn btn-primary"
           >
@@ -97,7 +97,21 @@ export default {
       }
       if (this.transactionLimit < 0) {
         this.$notify({
-          text: "Failed To Update: Not Allowed to go below 0",
+          text: "Failed To Update: Not Allowed to go negative value",
+          type: "error",
+        });
+        return;
+      }
+      if (this.transactionLimit < 50) {
+        this.$notify({
+          text: "Failed To Update: Not Allowed to go below 50",
+          type: "error",
+        });
+        return;
+      }
+      if (this.transactionLimit > 10000) {
+        this.$notify({
+          text: "Failed To Update: Not Allowed to go over 10000 Please contact the bank",
           type: "error",
         });
         return;
@@ -124,6 +138,7 @@ export default {
             text: "Updated Bank Account Settings",
             type: "success",
           });
+          document.getElementById("closeUpdate").click();
           this.$emit("updateAccount", this.holdAccount);
         })
         .catch((err) => {
