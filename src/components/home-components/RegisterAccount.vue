@@ -51,7 +51,7 @@
             <div class="col">
                 <label class="form-label" for="Address">Address</label>
                 <Field
-                    v-model="Address"
+                    v-model="address"
                     type="text"
                     name="Address"
                     id="Address"
@@ -62,7 +62,7 @@
             <div class="col">
                 <label class="form-label" for="postal">Postal code</label>
                 <Field
-                    v-model="postalCode"
+                    v-model="postalcode"
                     type="text"
                     name="postal"
                     id="postal"
@@ -174,7 +174,7 @@ export default {
       lastname: "",
       email: "",
       address: "",
-      postalCode: "",
+      postalcode: "",
       username: "",
       dob: "",
       password: "",
@@ -193,11 +193,24 @@ export default {
     onSubmit(values) {
 
       var data = {
+        firstname: values.firstname,
+        lastname: values.lastname,
+        email: values.email,
+        username: values.username,
         password: values.password,
         repeatPassword: values.repeatPassword,
-        requestLink: this.link,
-        email: this.email
+        address: values.address,
+        postalCode: values.postal,
+        dob: values.dob,
       }
+
+      this.$store.dispatch("registerUser", data)
+      .then((newUser) => {
+        console.log(newUser)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     
       
     }

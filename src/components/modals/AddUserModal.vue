@@ -194,7 +194,7 @@ export default {
         roles: this.selectedRoles
       }
 
-      this.$store.dispatch("registerUser", user)
+      this.$store.dispatch("registerAsEmployeeUser", user)
       .then((newUser) => {
 
         document.getElementById('closer').click();

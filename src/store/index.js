@@ -170,9 +170,22 @@ const store = createStore({
         })
     },
 
+    registerAsEmployeeUser({commit}, user){
+      return new Promise((resolve, reject) => {
+        axios.post('/api/v1/employee/registerUser', user, {headers: authHeader()})
+        .then((response) => {
+          console.warn(response.data)
+          resolve(response.data)
+        })
+        .catch((err) => {
+          reject(err.response.data)
+        })
+      })
+    },
+
     registerUser({commit}, user){
       return new Promise((resolve, reject) => {
-        axios.post('/api/v1/users/', user, {headers: authHeader()})
+        axios.post('/api/v1/users', user)
         .then((response) => {
           console.warn(response.data)
           resolve(response.data)
