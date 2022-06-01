@@ -49,15 +49,15 @@
 
         <div class="row mt-2">
             <div class="col">
-                <label class="form-label" for="Address">Address</label>
+                <label class="form-label" for="address">Address</label>
                 <Field
                     v-model="address"
                     type="text"
-                    name="Address"
-                    id="Address"
+                    name="address"
+                    id="address"
                     class="form-control "
                 />
-                <ErrorMessage class="form-label text-danger float-end" name="Address" />
+                <ErrorMessage class="form-label text-danger float-end" name="address" />
             </div>
             <div class="col">
                 <label class="form-label" for="postal">Postal code</label>
@@ -170,15 +170,15 @@ export default {
       schema,
       error: null,
       
-      firstname: "",
-      lastname: "",
-      email: "",
-      address: "",
-      postalcode: "",
-      username: "",
-      dob: "",
-      password: "",
-      repeatPassword: ""
+      firstname: "Sjef",
+      lastname: "Hannes",
+      email: "sjefhannes@gmail.com",
+      address: "Voorburg 15",
+      postalcode: "1455DD",
+      username: "sjeffie",
+      dob: "2000-10-10",
+      password: "@Welkom123!",
+      repeatPassword: "@Welkom123!"
     };
   },
   methods: {
@@ -200,16 +200,24 @@ export default {
         password: values.password,
         repeatPassword: values.repeatPassword,
         address: values.address,
-        postalCode: values.postal,
+        postalcode: values.postal,
         dob: values.dob,
+        roles: []
       }
 
       this.$store.dispatch("registerUser", data)
       .then((newUser) => {
-        console.log(newUser)
+        this.$notify({
+          text: "Successfully registered new account, please login",
+          type: "success",
+        });
+        this.$store.dispatch("setHomePageComponent", "")
       })
       .catch((err) => {
-        console.log(err)
+        this.$notify({
+          text: err,
+          type: "error",
+        });
       })
     
       
