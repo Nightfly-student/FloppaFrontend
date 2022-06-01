@@ -16,6 +16,7 @@
             <LoginComponent v-if="(page == '' || page == null) && !this.$store.getters.isLogged"/>
             <ForgotPassword v-if="page == 'reset'" />
             <ResetConfirm v-if="page == 'resetConfirm'" />
+            <RegisterAccount v-if="page == 'register'" />
           </div>
         </div>
       </div>
@@ -54,12 +55,15 @@
 import LoginComponent from "../components/login-components/LoginComponent.vue";
 import ForgotPassword from "../components/home-components/ForgotPassword.vue";
 import ResetConfirm from "../components/home-components/ResetConfirm.vue";
+import RegisterAccount from "../components/home-components/RegisterAccount.vue";
+
 export default {
   name: "Home",
   components: {
     LoginComponent,
     ForgotPassword,
-    ResetConfirm
+    ResetConfirm,
+    RegisterAccount
 },
   methods:{
     change(){

@@ -41,7 +41,10 @@
           <button type="submit" class="btn btn-primary btn-lg btn-block w-100">
             Sign in
           </button>
+
+
           <div class="d-flex justify-content-around align-items-center p-4">
+            <router-link @click="register" to="/?page=register">Register account</router-link> | 
             <router-link @click="forgot" to="/?page=reset">Forgot password?</router-link>
           </div>
         </div>
@@ -73,6 +76,9 @@ export default {
   methods: {
     forgot(){
       this.$store.dispatch("setHomePageComponent", "reset")
+    },
+    register(){
+      this.$store.dispatch("setHomePageComponent", "register")
     },
     onSubmit(values) {
       this.$store
