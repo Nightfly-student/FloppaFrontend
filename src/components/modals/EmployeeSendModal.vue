@@ -67,13 +67,14 @@ import { getUserName } from "../../helpers/authHeader";
 export default {
     name: "EmployeeSendModal",
     props: {
-        //account: Object,
+        user: Object,
         accountArray: {
             type: Array,
         }
     },
     data() {
         return {
+            user: this.user,
             value: 1,
             errorMsg: "",
             accounts: [],
@@ -104,16 +105,19 @@ export default {
                     console.log(res.data);
 
                     res.data.forEach((acc, i) => {
-                        if (!this.fromSelected && acc.active || acc.iban != this.fromIban && acc.active) {
-                            if (this.fromSelected && acc.iban != this.fromIban || !this.fromSelected) {
-                                if (acc.iban != "NL01INHO0000000001") {
-                                    if (this.fromSelected && this.fromAccount.accountType == "regular" && acc.accountType == "savings" && acc.user_id == this.fromAccount.userId ||
-                                        this.fromSelected && this.fromAccount.accountType == "regular" && acc.accountType == "regular" ||
-                                        this.fromSelected && this.fromAccount.accountType == "savings" && acc.user_id == this.fromAccount.userId || !this.fromSelected) {
-                                        if (this.fromSelected && this.fromAccount.accountType == "savings" && acc.user_id == this.fromAccount.userId || !this.fromSelected) {
-                                            this.accounts.push(acc);
-                                        } else if (this.fromSelected && this.fromAccount.accountType == "regular" || !this.fromSelected) {
-                                            this.accounts.push(acc);
+                        
+                        if (acc.user_id != this.user.id) {
+                            if (!this.fromSelected && acc.active || acc.iban != this.fromIban && acc.active) {
+                                if (this.fromSelected && acc.iban != this.fromIban || !this.fromSelected) {
+                                    if (acc.iban != "NL01INHO0000000001") {
+                                        if (this.fromSelected && this.fromAccount.accountType == "regular" && acc.accountType == "savings" && acc.user_id == this.fromAccount.userId ||
+                                            this.fromSelected && this.fromAccount.accountType == "regular" && acc.accountType == "regular" ||
+                                            this.fromSelected && this.fromAccount.accountType == "savings" && acc.user_id == this.fromAccount.userId || !this.fromSelected) {
+                                            if (this.fromSelected && this.fromAccount.accountType == "savings" && acc.user_id == this.fromAccount.userId || !this.fromSelected) {
+                                                this.accounts.push(acc);
+                                            } else if (this.fromSelected && this.fromAccount.accountType == "regular" || !this.fromSelected) {
+                                                this.accounts.push(acc);
+                                            }
                                         }
                                     }
                                 }
@@ -179,7 +183,7 @@ export default {
             this.userAccounts.forEach((acc, i) => {
                 if (acc.iban == this.fromIban) this.fromAccount = acc;
                 else this.toAccount = acc;
-            })//////////////////////////////////////////////////
+            })
 
             var value;
 
@@ -200,7 +204,7 @@ export default {
                     amount: this.value,
                     from: this.fromIban,
                     to: this.toIban,
-                    userPerforming: getUserName(),
+                    userPerforming: this.$store.state.user.username,
                 })
                 .then((res) => {
                     this.value = this.fromAccount.balance - value;
@@ -223,6 +227,7 @@ export default {
                     this.toAccount = "";
                     this.toSelected = false;
                     this.toIban = "";
+                    this.fromBalance = 0;
                 })
                 .catch((err) => {
                     console.log(err);

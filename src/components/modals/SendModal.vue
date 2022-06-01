@@ -163,7 +163,7 @@ export default {
           amount: this.value,
           from: this.account.iban,
           to: this.selectedIban,
-          userPerforming: getUserName(),
+          userPerforming: this.$store.state.user.username,
         })
         .then((res) => {
           this.value = this.account.balance - value;
