@@ -181,7 +181,7 @@
             <button
               class="page-link"
               @click="
-                changeOffset(limit, usersCount, true, usersCount / limit, true);
+                changeOffset(limit, usersCount, true, Math.ceil(usersCount / limit), true);
                 loadUsers();
               "
             >

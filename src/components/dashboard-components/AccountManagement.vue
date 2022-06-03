@@ -38,17 +38,46 @@
         <td>{{ account.balance }}</td>
         <td>{{ account.absoluteLimit }}</td>
         <td>{{ account.transactionLimit }}</td>
+        <td>
+          <span v-if="account.active">Active</span>
+          <span v-else>Inactive</span>
+        </td>
+        <td>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Actions
+            </button>
+            <div class="dropdown-menu">
 
-        <td v-if="account.active"><button type="button" data-bs-dismiss="modal" @click="changeStatus(account)" class="btn btn-primary active">
-          Active
-        </button></td>
-        <td v-else><button type="button" data-bs-dismiss="modal" @click="changeStatus(account)" class="btn btn-primary deactive">Not Active</button></td>
-        <td><button
-            :data-bs-target="'#SS' + account.iban"
-            data-bs-toggle="modal"
-            class="btn btn-primary">
-          Edit
-        </button><UpdateBankAccountModal :account="account" @updateAccount="updatedAccount" />
+              <button v-if="account.active"
+                      type="button"
+                      data-bs-dismiss="modal"
+                      @click="changeStatus(account)"
+                      class="dropdown-item">
+                Set Inactive
+              </button>
+              <button v-else
+                      type="button"
+                      data-bs-dismiss="modal"
+                      @click="changeStatus(account)"
+                      class="dropdown-item"
+              >
+                Set Active
+              </button>
+
+              <button
+                  :data-bs-target="'#SS' + account.iban"
+                  data-bs-toggle="modal"
+                  class="dropdown-item">
+                Edit Account
+              </button>
+
+            </div>
+          </div>
+
+          <!-- MODALS -->
+          <UpdateBankAccountModal :account="account"/>
+
         </td>
       </tr>
       </tbody>
@@ -64,7 +93,7 @@
             <a class="page-link" >{{ currentPage }}</a>
           </li>
           <li v-if="(offset + limit) < accountsCount" class="page-item disabled"><a class="page-link">...</a></li>
-          <li v-if="(offset + limit) < accountsCount" class="page-item"><button class="page-link" @click="changeOffset(limit, accountsCount, true, (accountsCount / limit), true); loadAccounts();">{{ Math.ceil(accountsCount / limit) }}</button></li>
+          <li v-if="(offset + limit) < accountsCount" class="page-item"><button class="page-link" @click="changeOffset(limit, accountsCount, true, Math.ceil(accountsCount / limit), true); loadAccounts();">{{ Math.ceil(accountsCount / limit) }}</button></li>
           <li v-if="(offset + limit) >= accountsCount" class="page-item disabled"><button class="page-link" >Next</button></li>
           <li v-else class="page-item"><button class="page-link" @click="changeOffset(limit, accountsCount, true, currentPage, false); loadAccounts();" >Next</button></li>
         </ul>
@@ -143,7 +172,7 @@ export default {
       }if (shortCut != false){
         switch (goForward) {
           case true:
-            this.offset = count - limit;
+            this.offset = 5*(Math.round((count - limit)/5));
             this.currentPage = pageNumber;
             break;
           case false:
