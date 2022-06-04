@@ -23,9 +23,9 @@
 
         <select v-if="filterMode == 'amount'" v-model="filterAmountType" class="rounded my-1"
           aria-label="Default select example">
-          <option selected value="bigger">></option>
-          <option value="smaller">&lt;</option>
-          <option value="=">=</option>
+          <option selected value="greater">></option>
+          <option value="less">&lt;</option>
+          <option value="equal">=</option>
         </select>
 
         <input v-if="filterMode == 'amount'" type="number" min="0" max="999999999" class="rounded my-1" v-model="amount"
@@ -161,7 +161,7 @@ export default {
       limit: 5,
       offset: 0,
       filterMode: "amount",
-      filterAmountType: "bigger",
+      filterAmountType: "greater",
     };
   },
   methods: {
