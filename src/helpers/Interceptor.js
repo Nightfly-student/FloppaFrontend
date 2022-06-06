@@ -5,6 +5,7 @@ import router from "../router";
 
 const setup = () => {
   axiosInstance.defaults.baseURL = 'https://floppa-inholland.herokuapp.com';
+  axiosInstance.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
   axiosInstance.interceptors.request.use(
     (config) => {
       const token = JSON.parse(localStorage.getItem("token"));
