@@ -10,6 +10,7 @@ import setupInterceptors from './helpers/Interceptor';
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
+import axios from "axios";
 
 setupInterceptors();
 
@@ -18,5 +19,11 @@ app.use(router);
 app.use(Notifications);
 app.use(store);
 app.use(BootstrapVue3)
+
+if(import.meta.env.PROD) {
+    axios.defaults.baseURL = 'https://floppa-inholland.herokuapp.com';
+} else {
+    axios.defaults.baseURL = 'http://localhost:80';
+}
 
 app.mount("#app");
