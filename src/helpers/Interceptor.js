@@ -2,7 +2,9 @@ import axiosInstance from "axios";
 import store from "../store";
 import router from "../router";
 
+
 const setup = () => {
+  axiosInstance.defaults.baseURL = 'https://floppa-inholland.herokuapp.com';
   axiosInstance.interceptors.request.use(
     (config) => {
       const token = JSON.parse(localStorage.getItem("token"));
