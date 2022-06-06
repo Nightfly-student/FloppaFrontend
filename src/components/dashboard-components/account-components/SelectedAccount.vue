@@ -26,10 +26,6 @@
       <UpdateBankAccountModal :account="account" @updateAccount="updatedAccount" />
     </div>
     <hr />
-    <div>
-      <h2 class="text-center">Transactions</h2>
-    </div>
-    <hr />
   </div>
 </template>
 
