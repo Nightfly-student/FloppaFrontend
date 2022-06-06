@@ -1,9 +1,14 @@
 import axiosInstance from "axios";
 import store from "../store";
 import router from "../router";
+import axios from "axios";
 
 const setup = () => {
-  axiosInstance.defaults.baseURL = 'https://floppa-inholland.herokuapp.com';
+  if (import.meta.env.PROD) {
+    axios.defaults.baseURL = "https://floppa-inholland.herokuapp.com";
+  } else {
+    axios.defaults.baseURL = "http://localhost:80";
+  }
   axiosInstance.interceptors.request.use(
     (config) => {
       const token = JSON.parse(localStorage.getItem("token"));
@@ -24,10 +29,7 @@ const setup = () => {
     async (err) => {
       const originalConfig = err.config;
 
-      if (
-        originalConfig.url !== "/api/v1/auth/login" &&
-        err.response
-      ) {
+      if (originalConfig.url !== "/api/v1/auth/login" && err.response) {
         // Access Token was expired
         if (err.response.status === 403 && !originalConfig._retry) {
           originalConfig._retry = true;
