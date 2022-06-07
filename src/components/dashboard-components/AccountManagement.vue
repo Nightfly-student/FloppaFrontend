@@ -146,6 +146,7 @@ export default {
               type: "error",
             });
           });
+      this.loadAccounts();
     },
     changeOffset(limit, count, goForward, pageNumber, shortCut){
       limit = parseInt(limit);
