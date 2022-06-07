@@ -132,6 +132,7 @@ export default {
     changeStatus(account) {
       var fr = account.active ? false : true;
       fr != null && (account.active = fr);
+      console.log(account.accountType);
       this.$store.dispatch("updateAccount", account)
           .then(() => {
             fr != null && (account.active = fr);
@@ -146,7 +147,8 @@ export default {
               type: "error",
             });
           });
-      this.loadAccounts();
+
+      console.log(account.accountType);
     },
     changeOffset(limit, count, goForward, pageNumber, shortCut){
       limit = parseInt(limit);
