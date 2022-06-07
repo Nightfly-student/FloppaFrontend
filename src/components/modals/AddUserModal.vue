@@ -170,6 +170,7 @@ export default {
       dob: "1990-01-01",
       selectedRoles: [],
       dbRoles:[],
+      createdRoles: [],
       dailyLimit: 1000
     };
   },
@@ -180,12 +181,15 @@ export default {
       var roles = [];
 
       if(loadedRoles != null){
+        this.dbRoles = loadedRoles
         loadedRoles.map((role) => {
           var roleItem = {label: role.name, value: role}
           roles.push(roleItem)
         })
       }
-      this.dbRoles = roles
+
+      this.createdRoles = roles
+
       return roles
     }
   },
@@ -193,6 +197,7 @@ export default {
     dbRoles: {
       handler(newValue, oldValue) {
         if (this.dbRoles.length >= 1) {
+          console.warn("setting ", this.dbRoles[0])
           this.selectedRoles[0] = this.dbRoles[0]
         }
       },
