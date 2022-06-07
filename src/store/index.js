@@ -367,6 +367,7 @@ const store = createStore({
 
         updateAccount({ commit }, data) {
             return new Promise((resolve, reject) => {
+                var type = data.accountType;
                 data.accountType = parseInt(data.accountType);
                 axios
                     .patch(`/api/v1/accounts/${data.iban}`, data)
@@ -376,6 +377,7 @@ const store = createStore({
                     .catch((err) => {
                         reject(err.response.data.message);
                     });
+                data.accountType = type; 
             });
         },
     },
