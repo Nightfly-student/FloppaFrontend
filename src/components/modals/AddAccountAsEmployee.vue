@@ -5,6 +5,7 @@
         <div class="modal-header">
           <h5 class="modal-title">Create New Bank Account for {{user.firstname}} {{user.lastname}}</h5>
           <button
+            id="closer"
             type="button"
             class="btn-close"
             data-bs-dismiss="modal"
@@ -31,7 +32,7 @@
           >
             Close
           </button>
-          <button type="button" @click="addAccount" data-bs-dismiss="modal" class="btn btn-primary">
+          <button type="button" @click="addAccount" class="btn btn-primary">
             Create Account
           </button>
         </div>
@@ -57,6 +58,15 @@ export default {
 
     addAccount(){
 
+      if(this.value == ""){
+        this.$notify({
+          text: "Select a valid account type",
+          type: "error",
+        });
+        return;
+      }
+
+
       var data = {
         userId: this.user.id,
         type: this.value
@@ -64,7 +74,7 @@ export default {
 
       this.$store.dispatch('registerUserAccount', data)
       .then((data) => {
-        document.getElementById('closer').click();
+        document.getElementById("closer").click();
         this.$notify({
           text: "Successfully Added a New Account",
           type: "success",
