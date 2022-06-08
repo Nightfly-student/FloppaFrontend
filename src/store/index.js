@@ -90,6 +90,13 @@ const store = createStore({
         addNewRegisteredUser(state, payload) {
             state.users.push(payload);
         },
+        addNewAccountToUser(state, payload) {
+            state.users.map((user) => {
+                if (user.id === payload.userId) {
+                    user.accounts.push(payload)
+                }
+            })
+        }
     },
     actions: {
         setHomePageComponent({ commit }, param) {
@@ -216,6 +223,7 @@ const store = createStore({
                     })
                     .then((response) => {
                         console.warn(response.data);
+                        commit("addNewAccountToUser", data)
                         resolve(response.data);
                     })
                     .catch((err) => {
@@ -377,7 +385,7 @@ const store = createStore({
                     .catch((err) => {
                         reject(err.response.data.message);
                     });
-                data.accountType = type; 
+                data.accountType = type;
             });
         },
     },
