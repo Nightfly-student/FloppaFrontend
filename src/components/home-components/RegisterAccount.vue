@@ -208,6 +208,9 @@ export default {
       schema,
       error: null,
 
+      value: "",
+      errorMsg: "",
+
       firstname: "Sjef",
       lastname: "Hannes",
       email: "sjefhannes@gmail.com",
