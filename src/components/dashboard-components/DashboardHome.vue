@@ -1,10 +1,10 @@
 <template>
   <div class="container-xl text-light">
     <p>Hi {{ username }}!
-    <button v-if="user.roles.some(e => e.name === 'EMPLOYEE')" :data-bs-target="'#EmployeeSendModal'" data-bs-toggle="modal" class="btn btn-primary mx-5">
+    <!-- <button v-if="user.roles.some(e => e.name === 'EMPLOYEE')" :data-bs-target="'#EmployeeSendModal'" data-bs-toggle="modal" class="btn btn-primary mx-5">
         Perform transaction
       </button>
-      <EmployeeSendModal :user="user" :accountArray="accounts" />
+      <EmployeeSendModal :user="user" :accountArray="accounts" /> -->
     </p>
     <div class="card shadow my-2">
       <div class="p-2">

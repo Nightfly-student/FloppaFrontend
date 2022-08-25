@@ -2,6 +2,14 @@
   <div class="container-xl">
     <div class="d-flex mb-2 justify-content-between">
       <div class="entries d-flex justify-content-between gap-2">
+
+        <button v-if="user.roles.some(e => e.name === 'EMPLOYEE')" :data-bs-target="'#EmployeeSendModal'"
+          data-bs-toggle="modal" class="btn btn-primary me-5">
+          Perform transaction
+        </button>
+        <EmployeeSendModal :user="user" :accountArray="accounts" />
+
+
         <span class="mt-2">Showing</span>
         <select name="" class="m-1" v-model="limit">
           <option value="5">5</option>
@@ -31,8 +39,8 @@
         <input v-if="filterMode == 'amount'" type="number" min="0" max="999999999" class="rounded my-1" v-model="amount"
           @change="offset = 0; currentPage = 1;" />
 
-        <input v-else-if="filterMode == 'from' || filterMode == 'to'" maxlength="18" class="rounded my-1" v-model="filterIBAN"
-          @change="offset = 0; currentPage = 1;" />
+        <input v-else-if="filterMode == 'from' || filterMode == 'to'" maxlength="18" class="rounded my-1"
+          v-model="filterIBAN" @change="offset = 0; currentPage = 1;" />
 
         <label v-else-if="filterMode == 'time'" class="mt-2">From</label>
         <input v-if="filterMode == 'time'" type="datetime-local" class="rounded my-1 w-100" v-model="filterStartDate"
@@ -101,15 +109,15 @@
           <li v-else class="page-item">
             <button class="page-link" @click="c
               hangeOffset(-limit, transactionsCount, false, currentPage, false);
-              loadTransactions();
+loadTransactions();
             ">
               Previous
             </button>
           </li>
           <li v-if="currentPage > 1" class="page-item">
             <button class="page-link" @click="
-              changeOffset(limit, transactionsCount, false, 1, true);
-              loadTransactions();
+  changeOffset(limit, transactionsCount, false, 1, true);
+loadTransactions();
             ">
               1
             </button>
@@ -125,8 +133,8 @@
           </li>
           <li v-if="offset + limit < transactionsCount" class="page-item">
             <button class="page-link" @click="
-              changeOffset(limit, transactionsCount, true, transactionsCount / limit, true);
-              loadTransactions();
+  changeOffset(limit, transactionsCount, true, transactionsCount / limit, true);
+loadTransactions();
             ">
               {{ Math.ceil(transactionsCount / limit) }}
             </button>
@@ -136,8 +144,8 @@
           </li>
           <li v-else class="page-item">
             <button class="page-link" @click="
-              changeOffset(limit, transactionsCount, true, currentPage, false);
-              loadTransactions();
+  changeOffset(limit, transactionsCount, true, currentPage, false);
+loadTransactions();
             ">
               Next
             </button>
@@ -152,10 +160,15 @@
 <script>
 import moment from 'moment';
 import { getUserId } from "../../helpers/authHeader";
+import EmployeeSendModal from "../modals/EmployeeSendModal.vue";
 export default {
   name: "Transactions",
+  components: {
+    EmployeeSendModal,
+  },
   data() {
     return {
+      accounts: [],
       currentPage: 1,
       amount: 0,
       limit: 5,
@@ -165,6 +178,15 @@ export default {
     };
   },
   methods: {
+    getAllAccounts() {
+      axios
+        .get(`/api/v1/users/${getUserId()}/accounts`, { headers: authHeader() })
+        .then((res) => {
+          this.accounts = res.data;
+          this.calculateTotal();
+          this.mounted = true;
+        });
+    },
     loadTransactions() {
       var offset = this.offset;
       var limit = this.limit;
@@ -245,6 +267,12 @@ export default {
     this.$store.dispatch("loadTransactions", { offset: 0, limit: 5 });
   },
   computed: {
+    user() {
+      return this.$store.state.user;
+    },
+    errorMsg() {
+      return "";
+    },
     transactions() {
       return this.$store.state.transactions;
     },

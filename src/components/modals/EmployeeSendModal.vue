@@ -190,7 +190,6 @@ export default {
             if (this.value != this.fromAccount.balance) {
                 value = this.value;
             }
-
             if (!this.fromSelected || !this.toSelected) {
                 this.errorMsg = "No IBAN selected";
                 return;
