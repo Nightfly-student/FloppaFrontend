@@ -29,7 +29,7 @@
         <AccountDashboard v-if="mounted" @selectedAccount="getSelectedAccount" :account="account" />
       </div>
     </div>
-    <div class="text-center mt-4">
+    <div v-if="accounts.length < 2" class="text-center mt-4">
       <button :data-bs-target="'#CreateAccount'" data-bs-toggle="modal" class="btn btn-primary">
         Create New Bank Account
       </button>

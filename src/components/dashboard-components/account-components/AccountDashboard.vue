@@ -1,5 +1,9 @@
 <template>
-  <div class="card shadow" @click="$emit('selectedAccount', account)">
+  <div
+    :class="{ dark: !account.active, normal: account.active }"
+    class="shadow"
+    @click="$emit('selectedAccount', account)"
+  >
     <div class="p-2">
       <div class="row">
         <div class="col-sm-8 col-7 col-lg-9">
@@ -9,8 +13,12 @@
           <p>{{ account.accountType }}</p>
         </div>
       </div>
-      <h2 v-if="account.balance >= 0">&euro; {{account.balance.toFixed(2)}}</h2>
-      <h2 v-else class="text-danger">&euro; {{account.balance.toFixed(2)}}</h2>
+      <h2 v-if="account.balance >= 0">
+        &euro; {{ account.balance.toFixed(2) }}
+      </h2>
+      <h2 v-else class="text-danger">
+        &euro; {{ account.balance.toFixed(2) }}
+      </h2>
     </div>
   </div>
 </template>
@@ -25,15 +33,23 @@ export default {
 </script>
 
 <style scoped>
-.card {
+.normal {
   background: rgb(36, 36, 36) !important;
   transition: 10ms ease-in-out;
 }
-.card:hover {
-    cursor: pointer;
-    transform: scale(1.03);
+.dark {
+  background: rgb(71, 71, 71) !important;
+  transition: 10ms ease-in-out;
+}
+.card {
+  transition: 10ms ease-in-out;
+}
+.normal:hover,
+.dark:hover {
+  cursor: pointer;
+  transform: scale(1.03);
 }
 .tiny {
-    font-size: 12px;
+  font-size: 12px;
 }
 </style>

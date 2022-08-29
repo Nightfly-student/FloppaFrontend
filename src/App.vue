@@ -1,6 +1,6 @@
 <template>
   <div>
-    <notifications position="bottom right" width="auto" />
+    <notifications position="top right" />
     <MenuBar />
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
@@ -28,7 +28,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
@@ -37,5 +37,12 @@ export default {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+.vue-notification {
+  margin: 0 5px 5px;
+  padding: 10px;
+  font-size: 16px !important;
+  color: #ffffff;
+  text-align: center !important;
 }
 </style>
