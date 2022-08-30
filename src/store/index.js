@@ -80,6 +80,10 @@ const store = createStore({
             state.transactions = payload.transactions;
             state.totalTransactionsCount = payload.totalCount;
         },
+        transactionNotLoaded(state) {
+            state.transactions = null;
+            state.totalTransactionsCount = null;
+        },
         updateUserDetails(state, payload) {},
         updateTokens(state, payload) {
             state.token = payload;
@@ -181,6 +185,7 @@ const store = createStore({
                 })
                 .catch((err) => {
                     console.warn(err);
+                    commit("transactionNotLoaded");
                 });
         },
 
