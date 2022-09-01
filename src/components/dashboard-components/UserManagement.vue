@@ -256,7 +256,7 @@ export default {
           fr != null && (user.is_active = fr);
           this.$notify({
             text:
-              "Updated User Status to Active / Not Active: " + user.is_active,
+              "Updated User Status",
             type: "success",
           });
         })

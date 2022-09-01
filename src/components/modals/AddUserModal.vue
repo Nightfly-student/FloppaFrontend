@@ -206,10 +206,10 @@ export default {
 
       firstname: "sjonny",
       lastname: "heinis",
-      email: "sjonnyheinis@gmail.com",
+      email: "sjonny@gmail.com",
       address: "voortreft 11",
       postalcode: "5166DD",
-      username: "sjonny55",
+      username: "sjonny",
       dob: "1990-01-01",
       selectedRoles: [],
       dbRoles: [],

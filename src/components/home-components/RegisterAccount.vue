@@ -6,7 +6,7 @@
         :validation-schema="schema"
         @submit="onSubmit"
       >
-        <h2 class="text-center">Create account</h2>
+        <h2 class="text-center">Register account</h2>
 
         <div class="row mt-2">
           <div class="col">
@@ -88,7 +88,7 @@
         </div>
 
         <div class="row mt-2">
-          <div class="col">
+          <div class="col-sm-6">
             <label class="form-label" for="username">Username</label>
             <Field
               v-model="username"
@@ -102,7 +102,7 @@
               name="username"
             />
           </div>
-          <div class="col">
+          <div class="col-sm-6">
             <label class="form-label" for="dob">Date of birth</label>
             <Field
               v-model="dob"
@@ -211,12 +211,12 @@ export default {
       value: "",
       errorMsg: "",
 
-      firstname: "Sjef",
-      lastname: "Hannes",
-      email: "sjefhannes@gmail.com",
+      firstname: "Peter",
+      lastname: "Piet",
+      email: "peterpiet@gmail.com",
       address: "Voorburg 15",
       postalcode: "1455DD",
-      username: "sjeffie",
+      username: "peter",
       dob: "2000-10-10",
       password: "@Welkom123!",
       repeatPassword: "@Welkom123!",
@@ -256,6 +256,7 @@ export default {
           this.$store.dispatch("setHomePageComponent", "");
         })
         .catch((err) => {
+          console.warn(err)
           this.$notify({
             text: err,
             type: "error",
